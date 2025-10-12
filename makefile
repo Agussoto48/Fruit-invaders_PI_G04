@@ -32,7 +32,7 @@ $(BIN_DIR):
 	@mkdir -p $(BIN_DIR)
 
 $(EXE): $(OBJ_ASM) $(OBJ_CPP)
-	$(CXX) $(OBJ_ASM) $(OBJ_CPP) -o $(EXE) $(LIBS)
+	$(CXX) $(OBJ_ASM) $(OBJ_CPP) -o $(EXE) $(LIBS) -no-pie
 
 # Compilar C++
 $(BIN_DIR)/%.o: $(CPP_DIR)/%.cpp | $(BIN_DIR)
