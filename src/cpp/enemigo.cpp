@@ -1,30 +1,46 @@
 #include "include/enemigo.h"
-#define ESCALA 0.2f
+#include <iostream> 
+
+Texture2D Enemigo::enemigoImages[3] = {};
 
 Enemigo::Enemigo(int type, Vector2 position)
 {
     this->type = type;
     this->position = position;
+    
+    if(enemigoImages[type-1].id==0){
+
     switch(type){
         case 1:
-            image = LoadTexture("sprites/Manzana.png");
+            enemigoImages[0] = LoadTexture("sprites/Manzana.png");
             break;
         case 2:
-            image = LoadTexture("sprites/Piña.png");
+            enemigoImages[1] = LoadTexture("sprites/Piña.png");
             break;
         case 3:
-            image = LoadTexture("sprites/Sandia.png");
+            enemigoImages[2] = LoadTexture("sprites/Sandia.png");
             break;
+        default:
+            enemigoImages[0] = LoadTexture("sprites/Manzana.png");
+            break;
+    }
     }
 }
 
 void Enemigo::Draw(){
-    DrawTextureV(image,position, WHITE);
+    DrawTextureV(enemigoImages[type - 1],position, WHITE);
 }
 
 int Enemigo::GetType(){
     return type;
 }
 
-Enemigo::~Enemigo(){
+void Enemigo::UnloadImages(){ //REVISAR PROBLEMA DE SEGMENTATION FAULT, no se esta haciendo correctamente el Unload
+    for(int i = 0; i < 3 ; ++i){
+        UnloadTexture(enemigoImages[i]);
+    }
+}
+
+void Enemigo::Update(int direction){
+    position.x += direction;
 }

@@ -6,20 +6,16 @@ class Enemigo{
 private:
     
 public:
-    Texture2D image;
+    static Texture2D enemigoImages[3];
     Vector2 position;
     int type;
 
-    //Construcotres
+    //Constructores
     Enemigo(int type, Vector2 position);
-    ~Enemigo();
 
-    void Update();
+    void Update(int direction);
     void Draw();
     int GetType();
-
-    //Funcionalidades
-    void Movimiento();
-    void Disparar();
+    static void UnloadImages();
 
 };
