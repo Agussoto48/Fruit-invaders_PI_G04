@@ -18,6 +18,7 @@ int main() {
     while(!WindowShouldClose()){
 
         combate.Inputs();
+        combate.Update();
 
         BeginDrawing();
         ClearBackground(GRAY);

@@ -4,6 +4,7 @@
 class Combate{
 private:
     Player jugador;
+    void EliminarDisparoInactivo();
 
 public:
     Combate();

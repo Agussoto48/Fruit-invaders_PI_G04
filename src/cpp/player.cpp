@@ -6,6 +6,7 @@ Player::Player()
     chef = LoadTexture("sprites/Chef.png");
     position.x = (GetScreenWidth() - chef.width * ESCALA) / 2;
     position.y = GetScreenHeight() - (chef.height * ESCALA);
+    tiempoDisparo = 0;
 }
 Player::~Player(){
 }
@@ -25,5 +26,12 @@ void Player::MoveRight(){
     position.x += 7; 
     if(position.x > (GetScreenWidth() - (chef.width * ESCALA))){
         position.x = GetScreenWidth() - (chef.width * ESCALA);
+    }
+}
+
+void Player::Disparar(){
+    if(GetTime() - tiempoDisparo >= 0.70){
+        disparos.push_back(Disparo({position.x, position.y},-6));
+        tiempoDisparo = GetTime();
     }
 }
