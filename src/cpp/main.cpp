@@ -1,5 +1,6 @@
 #include<raylib.h>
 #include "include/combate.h"
+
 #include <iostream>
 
 
@@ -14,7 +15,7 @@ int main() {
     SetTargetFPS(60);
 
     Combate combate;
-
+   
     while(!WindowShouldClose()){
 
         combate.Inputs();
@@ -29,6 +30,7 @@ int main() {
             { 0, 0 }, 0.0f, Fade(GRAY, 0.9f)
         );
         combate.Draw();
+
         EndDrawing();
     }
 
