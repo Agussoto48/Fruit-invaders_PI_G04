@@ -11,12 +11,12 @@ private:
     std::vector<Enemigo> crearEnemigos();
     void moverEnemigos();
     void moverAbajoEnemigos(int distance);
-    //void disparoEnemigo();
+    void disparoEnemigo();
     int direccionEnemigos;
     //PARTE QUE FALTA IMPLEMENTAR DE ALIENS, QUE DISPAREN:
-    //std::vector<Laser> enemigoLasers
-    //constexpr static float disparoEnemigoIntervalo;
-    // float ultimoDisparoEnemigo;
+    std::vector<Disparo> enemigoDisparos;
+    constexpr static float disparoEnemigoIntervalo = 0.35;
+    float ultimoDisparoEnemigo;
 public:
     Combate();
     ~Combate();

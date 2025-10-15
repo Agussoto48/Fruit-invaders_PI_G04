@@ -5,27 +5,24 @@
 Combate::Combate(){
     enemigos = crearEnemigos();
     direccionEnemigos = 1;
-    //ultimoDisparoEnemigo = 0;
+    ultimoDisparoEnemigo = 0;
 }
 
 Combate::~Combate(){
     Enemigo::UnloadImages();
 }
 
-void Combate::Update(){
-    moverEnemigos();
-
-    //disparoEnemigo();
-    //for(auto& disparo: enemigoDisparos){
-    //  disparo.Update();
-    //}
-}
 
 void Combate::Update(){
     for(auto& disparo: jugador.disparos){
         disparo.Update();
     }
+    moverEnemigos();
 
+    disparoEnemigo();
+    for(auto& disparo: enemigoDisparos){
+      disparo.Update();
+    }
     EliminarDisparoInactivo();
 }
 
@@ -39,9 +36,9 @@ void Combate::Draw(){
         enemigo.Draw();
     }
 
-    //for(auto& disparo: disparoEnemigos){
-    //  disparo.Draw();
-    //}
+    for(auto& disparo: enemigoDisparos){
+      disparo.Draw();
+    }
 }
 void Combate::Inputs(){
     if(IsKeyDown(KEY_LEFT)){
@@ -109,15 +106,15 @@ void Combate::moverAbajoEnemigos(int distance){
     }
 }
 
-//void Combate::disparoEnemigo(){
+void Combate::disparoEnemigo(){
 
-    //double tiempoActual = GetTime();
-    // if(tiempoActual - ultimoDisparoEnemigo >= disparoEnemigoIntervalo && !aliens.empty()){
-        // int randomIndex = GetRandomValue(0, enemigo.size()-1);
-        // Enemigo& enemigo = enemigos[randomIndex];
-        // enemigoDisparos.push_back(Disparo({enemigo.position.x + enemigo.enemigoImages[enemigo.type-1].width/2,
-        //                                  enemigo.position.y + enemigo.enemigoImages[enemigo.type-1].height}, 6));
-        // ultimoDisparoEnemigo = GetTime();
-    //}
+    double tiempoActual = GetTime();
+     if(tiempoActual - ultimoDisparoEnemigo >= disparoEnemigoIntervalo && !enemigos.empty()){
+         int randomIndex = GetRandomValue(0, enemigos.size()-1);
+         Enemigo& enemigo = enemigos[randomIndex];
+         enemigoDisparos.push_back(Disparo({enemigo.position.x + enemigo.enemigoImages[enemigo.type-1].width/2,
+                                          enemigo.position.y + enemigo.enemigoImages[enemigo.type-1].height}, 6));
+         ultimoDisparoEnemigo = GetTime();
+    }
     
-//}
+}
