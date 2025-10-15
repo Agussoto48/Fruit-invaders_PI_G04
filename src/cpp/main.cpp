@@ -13,9 +13,9 @@ int main() {
     Texture2D background = LoadTexture("sprites/kitchen.png");
 
     SetTargetFPS(60);
-
+{
     Combate combate;
-   
+ 
     while(!WindowShouldClose()){
 
         combate.Inputs();
@@ -33,8 +33,8 @@ int main() {
 
         EndDrawing();
     }
-
-
+}
+    UnloadTexture(background);
     CloseWindow();
 
     return 0;
