@@ -1,6 +1,7 @@
 #pragma once
 #include "player.h"
 #include "enemigo.h"
+#include "obstacle.h"
 #include <vector> 
 
 class Combate{
@@ -17,6 +18,9 @@ private:
     std::vector<Disparo> enemigoDisparos;
     constexpr static float disparoEnemigoIntervalo = 0.35;
     float ultimoDisparoEnemigo;
+
+    std::vector<Obstacle> CreateObstacle();
+    std::vector<Obstacle> obstacles;
 public:
     Combate();
     ~Combate();

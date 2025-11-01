@@ -6,6 +6,8 @@ Combate::Combate(){
     enemigos = crearEnemigos();
     direccionEnemigos = 1;
     ultimoDisparoEnemigo = 0;
+
+    obstacles = CreateObstacle();
 }
 
 Combate::~Combate(){
@@ -22,6 +24,10 @@ void Combate::Update(){
     disparoEnemigo();
     for(auto& disparo: enemigoDisparos){
       disparo.Update();
+    }
+
+    for (auto& obstacle: obstacles) {
+        obstacle.Draw();
     }
     EliminarDisparoInactivo();
 }
@@ -118,3 +124,15 @@ void Combate::disparoEnemigo(){
     }
     
 }
+
+std::vector<Obstacle> Combate::CreateObstacle() {
+    int obstacleWidth = Obstacle::grid[0].size() * 3;
+    float gap = (GetScreenWidth() - (4 * obstacleWidth))/5;
+
+    for (int i = 0; i < 4; i++) {
+        float offSetX = (i + 1) * gap + i * obstacleWidth;
+        obstacles.push_back(Obstacle({offSetX, float(GetScreenHeight() - 200)}));
+    }
+
+    return obstacles;
+};
