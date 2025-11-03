@@ -12,4 +12,5 @@ class Disparo{
         void Update();
         void Draw();
         bool active;
+        Rectangle getRect();
 };

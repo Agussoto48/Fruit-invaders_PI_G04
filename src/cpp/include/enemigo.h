@@ -17,5 +17,6 @@ public:
     void Draw();
     int GetType();
     static void UnloadImages();
+    Rectangle getRect();
 
 };

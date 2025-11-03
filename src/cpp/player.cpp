@@ -35,3 +35,7 @@ void Player::Disparar(){
         tiempoDisparo = GetTime();
     }
 }
+
+Rectangle Player::getRect() {
+    return {position.x, position.y, float(chef.width), float(chef.height)};
+}

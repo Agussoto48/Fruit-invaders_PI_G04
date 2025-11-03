@@ -23,3 +23,12 @@ void Disparo::Update() {
         }
     }
 }
+
+Rectangle Disparo::getRect() {
+  Rectangle rectangle;
+  rectangle.x = position.x;
+  rectangle.y = position.y;
+  rectangle.width = 3;
+  rectangle.height = 3;
+  return rectangle;
+}

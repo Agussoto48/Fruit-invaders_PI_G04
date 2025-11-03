@@ -44,3 +44,7 @@ void Enemigo::UnloadImages(){ //REVISAR PROBLEMA DE SEGMENTATION FAULT, no se es
 void Enemigo::Update(int direction){
     position.x += direction;
 }
+
+Rectangle Enemigo::getRect() {
+    return {position.x, position.y, float(enemigoImages[type - 1].width), float(enemigoImages[type - 1].height)};
+}

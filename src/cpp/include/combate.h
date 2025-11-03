@@ -21,6 +21,7 @@ private:
 
     std::vector<Obstacle> CreateObstacle();
     std::vector<Obstacle> obstacles;
+    void checkForCollisions();
 public:
     Combate();
     ~Combate();

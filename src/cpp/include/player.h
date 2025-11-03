@@ -18,5 +18,6 @@ public:
     void MoveRight();
     void Disparar();
     std::vector<Disparo> disparos;
+    Rectangle getRect();
 
 };
