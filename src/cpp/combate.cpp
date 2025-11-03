@@ -255,4 +255,4 @@ void Combate::checkForCollisions()
             }
         }
     }
-}
+} 
