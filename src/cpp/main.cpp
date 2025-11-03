@@ -24,10 +24,10 @@ int main() {
         BeginDrawing();
         ClearBackground(GRAY);
         DrawTexturePro(
-            background,                                      // textura
+            background,                                                  // textura
             { 0, 0, (float)background.width, (float)background.height }, // área original
             { 0, 0, (float)GetScreenWidth(), (float)GetScreenHeight() }, // destino en pantalla
-            { 0, 0 }, 0.0f, Fade(GRAY, 0.9f)
+            { 0, 0 }, 0.0f, Fade(GRAY, 0.9f)                             // Opacidad con respecto a un color
         );
         combate.Draw();
 
