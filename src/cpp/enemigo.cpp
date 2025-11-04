@@ -3,7 +3,7 @@
 
 // Declarar funciones externas de ensamblador
 extern "C" void moverEnemigo(int direction, Vector2* pos);
-extern "C" void moverEnemigoAbajo(int distance, Vector2* pos);
+extern "C" void moverEnemigoAbajo(int distance, Vector2* pos, float limiteInferior);
 
 Texture2D Enemigo::enemigoImages[3] = {};
 
@@ -54,8 +54,11 @@ void Enemigo::Update(int direction){
 }
 
 void Enemigo::MoveDown(int distance){
+
+    float limiteInferior = GetScreenHeight() - 150.0f;
+    
     // Llamar a la función de ensamblador para mover el enemigo hacia abajo
-    moverEnemigoAbajo(distance, &position);
+    moverEnemigoAbajo(distance, &position, limiteInferior);
 }
 
 Rectangle Enemigo::getRect() {

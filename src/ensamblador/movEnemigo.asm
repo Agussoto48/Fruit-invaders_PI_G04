@@ -19,11 +19,19 @@ moverEnemigo:
 ; void moverEnemigoAbajo(int distance, Vector2* pos)
 ; edi = distance (int)
 ; rsi = pos (Vector2*)
+; xmm0 = limiteInferior (float)
 moverEnemigoAbajo:
     mov rax, rsi                    ; rax = puntero a position
+    movss xmm2, xmm0                ; xmm2 = limiteInferior (guardar)
     cvtsi2ss xmm0, edi              ; convertir distance (int) a float
-    movss xmm1, dword [rax + 4]     ; xmm1 = position.y (offset +4 bytes)
+    movss xmm1, dword [rax + 4]     ; xmm1 = position.y
     addss xmm1, xmm0                ; position.y += distance
+    
+    ; Verificar si superó el límite inferior
+    ucomiss xmm1, xmm2              ; comparar position.y con limiteInferior
+    jbe .moverAbajo                 ; si position.y <= limite, mover
+    movss xmm1, xmm2                ; si superó, poner en el límite
+.moverAbajo:
     movss dword [rax + 4], xmm1     ; guardar position.y
     ret
 
