@@ -60,6 +60,16 @@ void Combate::Draw()
     {
         disparo.Draw();
     }
+    /*
+    Para hacer debug
+    DrawRectangleLinesEx(jugador.getRect(), 1, BLUE);
+    for (auto &enemigo : enemigos)
+        DrawRectangleLinesEx(enemigo.getRect(), 1, GREEN);
+    for (auto &disparo : enemigoDisparos)
+        DrawRectangleLinesEx(disparo.getRect(), 1, RED);
+    for (auto &disparo : jugador.disparos)
+        DrawRectangleLinesEx(disparo.getRect(), 1, RED);*/
+
 }
 void Combate::Inputs()
 {
