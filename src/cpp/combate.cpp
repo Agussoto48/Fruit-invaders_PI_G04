@@ -4,11 +4,7 @@
 
 Combate::Combate()
 {
-    enemigos = crearEnemigos();
-    direccionEnemigos = 1;
-    ultimoDisparoEnemigo = 0;
-
-    obstacles = CreateObstacle();
+    InitGame();
 }
 
 Combate::~Combate()
@@ -18,25 +14,33 @@ Combate::~Combate()
 
 void Combate::Update()
 {
-    for (auto &disparo : jugador.disparos)
-    {
-        disparo.Update();
-    }
-    moverEnemigos();
+    if(run){ 
+        for (auto &disparo : jugador.disparos)
+        {
+            disparo.Update();
+        }
+        moverEnemigos();
 
-    disparoEnemigo();
-    for (auto &disparo : enemigoDisparos)
-    {
-        disparo.Update();
-    }
+        disparoEnemigo();
+        for (auto &disparo : enemigoDisparos)
+        {
+            disparo.Update();
+        }
 
-    for (auto &obstacle : obstacles)
-    {
-        obstacle.Draw();
+        for (auto &obstacle : obstacles)
+        {
+            obstacle.Draw();
+        }
+        EliminarDisparoInactivo();
+        checkForCollisions();
     }
-    EliminarDisparoInactivo();
-
-    checkForCollisions();
+    else {
+        if(IsKeyDown(KEY_ENTER)){
+            //Aquí saltaría a la pantalla de gameover
+            Reset();
+            InitGame();
+        }
+    }
 }
 
 void Combate::Draw()
@@ -59,17 +63,20 @@ void Combate::Draw()
 }
 void Combate::Inputs()
 {
-    if (IsKeyDown(KEY_LEFT))
+    if(run)
     {
-        jugador.MoveLeft();
-    }
-    else if (IsKeyDown(KEY_RIGHT))
-    {
-        jugador.MoveRight();
-    }
-    else if (IsKeyDown(KEY_SPACE))
-    {
-        jugador.Disparar();
+        if (IsKeyDown(KEY_LEFT))
+        {
+            jugador.MoveLeft();
+        }
+        else if (IsKeyDown(KEY_RIGHT))
+        {
+            jugador.MoveRight();
+        }
+        else if (IsKeyDown(KEY_SPACE))
+        {
+            jugador.Disparar();
+        }
     }
 }
 
@@ -86,8 +93,18 @@ void Combate::EliminarDisparoInactivo()
             ++it;
         }
     }
+    for (auto it = enemigoDisparos.begin(); it != enemigoDisparos.end();)
+    {
+        if (!it->active)
+        {
+            it = enemigoDisparos.erase(it);
+        }
+        else
+        {
+            ++it;
+        }
+    }
 }
-
 std::vector<Enemigo> Combate::crearEnemigos()
 {
     std::vector<Enemigo> enemigos;
@@ -217,6 +234,9 @@ void Combate::checkForCollisions()
         if (CheckCollisionRecs(disparo.getRect(), jugador.getRect()))
         {
             disparo.active = false;
+            lives--;
+            if(lives == 0)
+                GameOver();
         }
 
         for (auto &obstacle : obstacles)
@@ -256,3 +276,22 @@ void Combate::checkForCollisions()
         }
     }
 } 
+
+void Combate::GameOver(){
+    run = false;
+
+}
+void Combate::InitGame(){
+    enemigos = crearEnemigos();
+    direccionEnemigos = 1;
+    ultimoDisparoEnemigo = 0;
+    lives = 3;
+    run = true;
+    obstacles = CreateObstacle();
+}
+
+void Combate::Reset(){
+    enemigos.clear();
+    enemigoDisparos.clear();
+    obstacles.clear();
+}

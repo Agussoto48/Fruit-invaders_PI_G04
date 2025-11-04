@@ -1,5 +1,7 @@
 #include "include/disparo.h"
 #include <iostream>
+#define ESCALA 0.2f
+
 
 Disparo::Disparo(Vector2 position, int speed) 
 {
@@ -11,7 +13,7 @@ Disparo::Disparo(Vector2 position, int speed)
 
 void Disparo::Draw() {
     if(active) {
-        DrawTextureEx(cuchillo, position, 0.0, 0.2f, WHITE);
+        DrawTextureEx(cuchillo, position, 0.0, ESCALA, WHITE);
     }
 }
 
@@ -25,10 +27,14 @@ void Disparo::Update() {
 }
 
 Rectangle Disparo::getRect() {
-  Rectangle rectangle;
-  rectangle.x = position.x;
-  rectangle.y = position.y;
-  rectangle.width = 3;
-  rectangle.height = 3;
-  return rectangle;
+   Rectangle rectangle;
+
+    float ancho = cuchillo.width * ESCALA;
+    float alto = cuchillo.height * ESCALA;
+    rectangle.x = position.x + ancho/2.5;
+    rectangle.y = position.y;
+    rectangle.width = ancho / 5;
+    rectangle.height = alto;
+
+    return rectangle;
 }

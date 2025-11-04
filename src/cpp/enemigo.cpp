@@ -1,5 +1,6 @@
 #include "include/enemigo.h"
 #include <iostream> 
+#define ESCALA 0.2f
 
 Texture2D Enemigo::enemigoImages[3] = {};
 

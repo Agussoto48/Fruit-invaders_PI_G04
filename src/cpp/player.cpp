@@ -37,5 +37,16 @@ void Player::Disparar(){
 }
 
 Rectangle Player::getRect() {
-    return {position.x, position.y, float(chef.width), float(chef.height)};
+    Rectangle rectangle;
+
+    float ancho = chef.width * ESCALA;
+    float alto =  chef.height * ESCALA;
+    rectangle.x = position.x + ancho/4;
+    rectangle.y = position.y;
+    rectangle.width = ancho / 2;
+    rectangle.height = alto;
+
+    return rectangle;
+
+    return rectangle;
 }
