@@ -7,7 +7,6 @@
 class Combate{
 private:
     Player jugador;
-    int lives;
     void EliminarDisparoInactivo();
     std::vector<Enemigo> enemigos;
     std::vector<Enemigo> crearEnemigos();
@@ -34,4 +33,5 @@ public:
     void Update();
     void Inputs();
     bool run;
+    int lives;
 };

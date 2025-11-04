@@ -246,7 +246,9 @@ void Combate::checkForCollisions()
             disparo.active = false;
             lives--;
             if(lives == 0)
+            {
                 GameOver();
+            }
         }
 
         for (auto &obstacle : obstacles)
