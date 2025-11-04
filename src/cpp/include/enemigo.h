@@ -1,7 +1,6 @@
 #pragma once
 #include<raylib.h>
 
-
 class Enemigo{
 private:
     
@@ -10,13 +9,14 @@ public:
     Vector2 position;
     int type;
 
-    //Constructores
+    // Constructores
     Enemigo(int type, Vector2 position);
 
-    void Update(int direction);
-    void Draw();
-    int GetType();
-    static void UnloadImages();
-    Rectangle getRect();
-
+    // Métodos
+    void Update(int direction); //actualiza la posicion del enemigo, ya esta en ensambla
+    void MoveDown(int distance);  // Metodo en ensamblador para mover arriba y abajo
+    void Draw(); //pone las imagenes de los enemigos
+    int GetType(); //da el tipo de enemigo, sandia, manzana o pineapple
+    static void UnloadImages(); //quita las imagenes cuando se cierra el juego por optimizacion
+    Rectangle getRect(); //esto es el hitbox
 };

@@ -88,8 +88,7 @@ void Combate::EliminarDisparoInactivo()
     }
 }
 
-std::vector<Enemigo> Combate::crearEnemigos()
-{
+std::vector<Enemigo> Combate::crearEnemigos(){
     std::vector<Enemigo> enemigos;
     for (int fila = 0; fila < 5; ++fila)
     {
@@ -143,7 +142,7 @@ void Combate::moverAbajoEnemigos(int distance)
 {
     for (auto &enemigo : enemigos)
     {
-        enemigo.position.y += distance;
+        enemigo.MoveDown(distance);
     }
 }
 
