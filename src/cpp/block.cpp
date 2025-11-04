@@ -1,17 +1,20 @@
 #include "include/block.h"
 
-Block::Block (Vector2 position) 
-: position(position) {}
+extern "C" void asm_block_draw(float x, float y);
+extern "C" void asm_block_get_rect(float x, float y, Rectangle* out);
 
-void Block::Draw() {
-  DrawRectangle(position.x, position.y, 3, 3, {243, 216, 63, 255});
+Block::Block(Vector2 position)
+    : position(position) {}
+
+void Block::Draw()
+{
+  // Llama a la rutina NASM (convierte float→int y llama DrawRectangle)
+  asm_block_draw(position.x, position.y);
 }
 
-Rectangle Block::getRect() {
-  Rectangle rectangle;
-  rectangle.x = position.x;
-  rectangle.y = position.y;
-  rectangle.width = 3;
-  rectangle.height = 3;
-  return rectangle;
+Rectangle Block::getRect()
+{
+  Rectangle r;
+  asm_block_get_rect(position.x, position.y, &r);
+  return r;
 }
