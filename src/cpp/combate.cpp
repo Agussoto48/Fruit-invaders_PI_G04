@@ -212,6 +212,14 @@ void Combate::checkForCollisions()
         {
             if (CheckCollisionRecs(it->getRect(), disparo.getRect()))
             {
+                if (it -> type == 1) {
+                    score += 10;
+                } else if (it -> type == 2) {
+                    score += 20;
+                } else if (it -> type == 3) {
+                    score += 30;
+                }
+                
                 it = enemigos.erase(it);
                 disparo.active = false;
             }
@@ -299,6 +307,7 @@ void Combate::InitGame(){
     ultimoDisparoEnemigo = 0;
     lives = 3;
     run = true;
+    score = 0;
     obstacles = CreateObstacle();
 }
 

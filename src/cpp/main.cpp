@@ -1,5 +1,6 @@
 #include<raylib.h>
 #include "include/combate.h"
+#include <string>
 
 #include <iostream>
 
@@ -13,6 +14,7 @@ int main() {
     Texture2D background = LoadTexture("sprites/kitchen.png");
     Font font = LoadFontEx("Font/monogram.ttf", 54, 0, 0);
     Texture2D chefVidas = LoadTexture("sprites/Chef.png");
+    Texture2D scoreIcono = LoadTexture("sprites/score.png");
     SetTargetFPS(60);
 {
     Combate combate;
@@ -44,6 +46,18 @@ int main() {
             DrawTextureEx(chefVidas, {x, 0}, 0.0 , 0.2f , WHITE);
             x += 50;
         }
+
+        float posX = (GetScreenWidth() - scoreIcono.width * 0.2f) / 2 - 50;
+        float posY = 0.0;
+        DrawTextureEx(scoreIcono, {posX, posY}, 0.0f, 0.2f, WHITE);
+
+        std::string numTexto = std::to_string(combate.score);
+        int cerosRest = 5 - numTexto.length();
+        numTexto = std::string(cerosRest, '0') + numTexto;
+
+        float textX = posX + scoreIcono.width * 0.25f - 20.0f;
+        float textY = posY + 35.0f;
+        DrawTextEx(font, numTexto.c_str(), {textX, textY}, 34, 2, YELLOW);
 
         combate.Draw();
 

@@ -34,4 +34,5 @@ public:
     void Inputs();
     bool run;
     int lives;
+    int score;
 };
