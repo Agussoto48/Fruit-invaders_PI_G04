@@ -27,10 +27,6 @@ void Combate::Update()
             disparo.Update();
         }
 
-        for (auto &obstacle : obstacles)
-        {
-            obstacle.Draw();
-        }
         EliminarDisparoInactivo();
         checkForCollisions();
     }
@@ -60,6 +56,11 @@ void Combate::Draw()
     {
         disparo.Draw();
     }
+    for (auto &obstacle : obstacles)
+    {
+        obstacle.Draw();
+    }
+
     /*
     Para hacer debug
     DrawRectangleLinesEx(jugador.getRect(), 1, BLUE);

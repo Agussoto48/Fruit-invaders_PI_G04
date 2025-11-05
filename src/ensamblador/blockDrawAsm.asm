@@ -14,7 +14,7 @@ asm_block_draw:
     cvttss2si  esi, xmm1       ; y -> ESI
     mov        edx, 3          ; w
     mov        ecx, 3          ; h
-    mov        r8d, 0xFF3FD8F3 ; Color(r,g,b,a)
+    mov        r8d, 0xFFFFFFFF ; Color(r,g,b,a)
 
     ; Alinear stack a 16 bytes antes del call
     sub        rsp, 8
