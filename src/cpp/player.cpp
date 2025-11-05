@@ -1,32 +1,37 @@
 #include "include/player.h"
 #define ESCALA 0.2f
+extern "C" void moverJugadorIzquierda(float, Vector2*);
+extern "C" void moverJugadorDerecha(float, Vector2*);
 
+// Constructores y destructores
 Player::Player()
 {
     chef = LoadTexture("sprites/Chef.png");
     position.x = (GetScreenWidth() - chef.width * ESCALA) / 2;
     position.y = GetScreenHeight() - (chef.height * ESCALA);
-    tiempoDisparo = 0;
 }
 Player::~Player(){
 }
 
+/**
+ * @brief Funcion para imprimir el personaje en la ventana
+ */
 void Player::Draw(){
-    DrawTextureEx(chef, position, 0.0 , ESCALA , WHITE);
+    DrawTextureEx(chef, position, 0.0 , 0.2f , WHITE);
 }
-
-//Estos dos metodos implementar con encsamblador
+/**
+ * @brief Funcion para mover el personaje a la izquierda, llamando a una funcion en asm
+ */
 void Player::MoveLeft(){
-    position.x -= 7;
-    if(position.x < 0){
-        position.x = 0;
-    }
+    float leftLimit = 0.0f;
+    moverJugadorIzquierda(leftLimit, &position);
 }
+/**
+ * @brief Funcion para mover el personaje a la derecha, llamando a una funcion en asm
+ */
 void Player::MoveRight(){
-    position.x += 7; 
-    if(position.x > (GetScreenWidth() - (chef.width * ESCALA))){
-        position.x = GetScreenWidth() - (chef.width * ESCALA);
-    }
+    float rightLimit = (float)(GetScreenWidth() - (chef.width * ESCALA));
+    moverJugadorDerecha(rightLimit, &position);
 }
 
 void Player::Disparar(){
