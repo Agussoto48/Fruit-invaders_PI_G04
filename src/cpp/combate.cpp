@@ -170,7 +170,7 @@ void Combate::moverAbajoEnemigos(int distance)
 {
     for (auto &enemigo : enemigos)
     {
-        enemigo.position.y += distance;
+        enemigo.MoveDown(distance);
     }
 }
 
