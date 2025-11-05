@@ -22,10 +22,17 @@ private:
     std::vector<Obstacle> CreateObstacle();
     std::vector<Obstacle> obstacles;
     void checkForCollisions();
+
+    void GameOver();
+    void Reset();
+    void InitGame();
 public:
     Combate();
     ~Combate();
     void Draw();
     void Update();
     void Inputs();
+    bool run;
+    int lives;
+    int score;
 };

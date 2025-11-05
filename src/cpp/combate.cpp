@@ -4,11 +4,7 @@
 
 Combate::Combate()
 {
-    enemigos = crearEnemigos();
-    direccionEnemigos = 1;
-    ultimoDisparoEnemigo = 0;
-
-    obstacles = CreateObstacle();
+    InitGame();
 }
 
 Combate::~Combate()
@@ -18,25 +14,33 @@ Combate::~Combate()
 
 void Combate::Update()
 {
-    for (auto &disparo : jugador.disparos)
-    {
-        disparo.Update();
-    }
-    moverEnemigos();
+    if(run){ 
+        for (auto &disparo : jugador.disparos)
+        {
+            disparo.Update();
+        }
+        moverEnemigos();
 
-    disparoEnemigo();
-    for (auto &disparo : enemigoDisparos)
-    {
-        disparo.Update();
-    }
+        disparoEnemigo();
+        for (auto &disparo : enemigoDisparos)
+        {
+            disparo.Update();
+        }
 
-    for (auto &obstacle : obstacles)
-    {
-        obstacle.Draw();
+        for (auto &obstacle : obstacles)
+        {
+            obstacle.Draw();
+        }
+        EliminarDisparoInactivo();
+        checkForCollisions();
     }
-    EliminarDisparoInactivo();
-
-    checkForCollisions();
+    else {
+        if(IsKeyDown(KEY_ENTER)){
+            //Aquí saltaría a la pantalla de gameover
+            Reset();
+            InitGame();
+        }
+    }
 }
 
 void Combate::Draw()
@@ -56,20 +60,33 @@ void Combate::Draw()
     {
         disparo.Draw();
     }
+    /*
+    Para hacer debug
+    DrawRectangleLinesEx(jugador.getRect(), 1, BLUE);
+    for (auto &enemigo : enemigos)
+        DrawRectangleLinesEx(enemigo.getRect(), 1, GREEN);
+    for (auto &disparo : enemigoDisparos)
+        DrawRectangleLinesEx(disparo.getRect(), 1, RED);
+    for (auto &disparo : jugador.disparos)
+        DrawRectangleLinesEx(disparo.getRect(), 1, RED);*/
+
 }
 void Combate::Inputs()
 {
-    if (IsKeyDown(KEY_LEFT))
+    if(run)
     {
-        jugador.MoveLeft();
-    }
-    else if (IsKeyDown(KEY_RIGHT))
-    {
-        jugador.MoveRight();
-    }
-    else if (IsKeyDown(KEY_SPACE))
-    {
-        jugador.Disparar();
+        if (IsKeyDown(KEY_LEFT))
+        {
+            jugador.MoveLeft();
+        }
+        else if (IsKeyDown(KEY_RIGHT))
+        {
+            jugador.MoveRight();
+        }
+        else if (IsKeyDown(KEY_SPACE))
+        {
+            jugador.Disparar();
+        }
     }
 }
 
@@ -86,8 +103,18 @@ void Combate::EliminarDisparoInactivo()
             ++it;
         }
     }
+    for (auto it = enemigoDisparos.begin(); it != enemigoDisparos.end();)
+    {
+        if (!it->active)
+        {
+            it = enemigoDisparos.erase(it);
+        }
+        else
+        {
+            ++it;
+        }
+    }
 }
-
 std::vector<Enemigo> Combate::crearEnemigos()
 {
     std::vector<Enemigo> enemigos;
@@ -143,7 +170,7 @@ void Combate::moverAbajoEnemigos(int distance)
 {
     for (auto &enemigo : enemigos)
     {
-        enemigo.position.y += distance;
+        enemigo.MoveDown(distance);
     }
 }
 
@@ -185,6 +212,14 @@ void Combate::checkForCollisions()
         {
             if (CheckCollisionRecs(it->getRect(), disparo.getRect()))
             {
+                if (it -> type == 1) {
+                    score += 10;
+                } else if (it -> type == 2) {
+                    score += 20;
+                } else if (it -> type == 3) {
+                    score += 30;
+                }
+                
                 it = enemigos.erase(it);
                 disparo.active = false;
             }
@@ -217,6 +252,11 @@ void Combate::checkForCollisions()
         if (CheckCollisionRecs(disparo.getRect(), jugador.getRect()))
         {
             disparo.active = false;
+            lives--;
+            if(lives == 0)
+            {
+                GameOver();
+            }
         }
 
         for (auto &obstacle : obstacles)
@@ -256,3 +296,23 @@ void Combate::checkForCollisions()
         }
     }
 } 
+
+void Combate::GameOver(){
+    run = false;
+
+}
+void Combate::InitGame(){
+    enemigos = crearEnemigos();
+    direccionEnemigos = 1;
+    ultimoDisparoEnemigo = 0;
+    lives = 3;
+    run = true;
+    score = 0;
+    obstacles = CreateObstacle();
+}
+
+void Combate::Reset(){
+    enemigos.clear();
+    enemigoDisparos.clear();
+    obstacles.clear();
+}

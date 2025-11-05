@@ -1,5 +1,10 @@
 #include "include/enemigo.h"
 #include <iostream> 
+#define ESCALA 0.2f
+
+// Declarar funciones externas de ensamblador
+extern "C" void moverEnemigo(int direction, Vector2* pos);
+extern "C" void moverEnemigoAbajo(int distance, Vector2* pos, float limiteInferior);
 
 Texture2D Enemigo::enemigoImages[3] = {};
 
@@ -35,14 +40,26 @@ int Enemigo::GetType(){
     return type;
 }
 
-void Enemigo::UnloadImages(){ //REVISAR PROBLEMA DE SEGMENTATION FAULT, no se esta haciendo correctamente el Unload
+void Enemigo::UnloadImages(){
     for(int i = 0; i < 3 ; ++i){
-        UnloadTexture(enemigoImages[i]);
+        if(enemigoImages[i].id != 0){  //Se supone que cone sta verificacion ya no da segmentation fault
+            UnloadTexture(enemigoImages[i]);
+            enemigoImages[i].id = 0;
+        }
     }
 }
 
 void Enemigo::Update(int direction){
-    position.x += direction;
+    // Llamar a la función de ensamblador para mover el enemigo
+    moverEnemigo(direction, &position);
+}
+
+void Enemigo::MoveDown(int distance){
+
+    float limiteInferior = GetScreenHeight() - 150.0f;
+    
+    // Llamar a la función de ensamblador para mover el enemigo hacia abajo
+    moverEnemigoAbajo(distance, &position, limiteInferior);
 }
 
 Rectangle Enemigo::getRect() {
