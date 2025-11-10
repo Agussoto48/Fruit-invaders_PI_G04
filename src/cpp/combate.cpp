@@ -124,20 +124,20 @@ std::vector<Enemigo> Combate::crearEnemigos()
         for (int columna = 0; columna < 11; ++columna)
         {
 
-            int enemigoType;
+            EnemigoTipo enemigoType;
             if (fila == 0)
             {
-                enemigoType = 3;
+                enemigoType = EnemigoTipo::SANDIA;
             }
             else
             {
                 if (fila == 1 || fila == 2)
                 {
-                    enemigoType = 2;
+                    enemigoType = EnemigoTipo::PINA;
                 }
                 else
                 {
-                    enemigoType = 1;
+                    enemigoType = EnemigoTipo::MANZANA;
                 }
             }
 
@@ -153,7 +153,9 @@ void Combate::moverEnemigos()
 {
     for (auto &enemigo : enemigos)
     {
-        if (enemigo.position.x + enemigo.enemigoImages[enemigo.type - 1].width > GetScreenWidth())
+        int typeIndex = static_cast<int>(enemigo.type);
+
+        if (enemigo.position.x + enemigo.enemigoImages[typeIndex].width > GetScreenWidth())
         {
             direccionEnemigos = -1;
             moverAbajoEnemigos(4);
@@ -180,17 +182,22 @@ void Combate::moverAbajoEnemigos(int distance)
     }
 }
 
-void Combate::disparoEnemigo()
-{
-
+void Combate::disparoEnemigo(){
     double tiempoActual = GetTime();
     if (tiempoActual - ultimoDisparoEnemigo >= disparoEnemigoIntervalo && !enemigos.empty())
     {
         int randomIndex = GetRandomValue(0, enemigos.size() - 1);
         Enemigo &enemigo = enemigos[randomIndex];
-        enemigoDisparos.push_back(Disparo({enemigo.position.x + enemigo.enemigoImages[enemigo.type - 1].width / 2,
-                                           enemigo.position.y + enemigo.enemigoImages[enemigo.type - 1].height},
-                                          6, true));
+        
+        int typeIndex = static_cast<int>(enemigo.type);  
+        
+        // usar inicialización correcta de Vector2
+        Vector2 disparoPos = {
+            enemigo.position.x + enemigo.enemigoImages[typeIndex].width / 2,
+            enemigo.position.y + enemigo.enemigoImages[typeIndex].height
+        };
+        
+        enemigoDisparos.push_back(Disparo(disparoPos, 6, true));
         ultimoDisparoEnemigo = GetTime();
     }
 }
@@ -218,12 +225,16 @@ void Combate::checkForCollisions()
         {
             if (CheckCollisionRecs(it->getRect(), disparo.getRect()))
             {
-                if (it -> type == 1) {
-                    score += 10;
-                } else if (it -> type == 2) {
-                    score += 20;
-                } else if (it -> type == 3) {
-                    score += 30;
+                switch(it->type) {
+                    case EnemigoTipo::MANZANA:
+                        score += 10;
+                        break;
+                    case EnemigoTipo::PINA:
+                        score += 20;
+                        break;
+                    case EnemigoTipo::SANDIA:
+                        score += 30;
+                        break;
                 }
                 
                 it = enemigos.erase(it);

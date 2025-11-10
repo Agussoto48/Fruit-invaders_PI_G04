@@ -7,35 +7,35 @@ extern "C" int movimientoEnemigo(int tipo, int parametro, Vector2* pos, float li
 
 Texture2D Enemigo::enemigoImages[3] = {};
 
-Enemigo::Enemigo(int type, Vector2 position)
+Enemigo::Enemigo(EnemigoTipo type, Vector2 position)
 {
     this->type = type;
     this->position = position;
     
-    if(enemigoImages[type-1].id==0){
+    int typeIndex = static_cast<int>(type);
+
+    if(enemigoImages[typeIndex].id==0){
 
     switch(type){
-        case 1:
-            enemigoImages[0] = LoadTexture("sprites/Manzana.png");
-            break;
-        case 2:
-            enemigoImages[1] = LoadTexture("sprites/Piña.png");
-            break;
-        case 3:
-            enemigoImages[2] = LoadTexture("sprites/Sandia.png");
-            break;
-        default:
-            enemigoImages[0] = LoadTexture("sprites/Manzana.png");
-            break;
-    }
+            case EnemigoTipo::MANZANA:
+                enemigoImages[0] = LoadTexture("sprites/Manzana.png");
+                break;
+            case EnemigoTipo::PINA:
+                enemigoImages[1] = LoadTexture("sprites/Piña.png");
+                break;
+            case EnemigoTipo::SANDIA:
+                enemigoImages[2] = LoadTexture("sprites/Sandia.png");
+                break;
+        }
     }
 }
 
 void Enemigo::Draw(){
-    DrawTextureV(enemigoImages[type - 1],position, WHITE);
+    int typeIndex = static_cast<int>(type);
+    DrawTextureV(enemigoImages[typeIndex], position, WHITE);
 }
 
-int Enemigo::GetType(){
+EnemigoTipo Enemigo::GetType(){
     return type;
 }
 
@@ -64,5 +64,7 @@ bool Enemigo::MoveDown(int distance){
 }
 
 Rectangle Enemigo::getRect() {
-    return {position.x, position.y, float(enemigoImages[type - 1].width), float(enemigoImages[type - 1].height)};
+    int typeIndex = static_cast<int>(type); 
+    return {position.x, position.y, float(enemigoImages[typeIndex].width), float(enemigoImages[typeIndex].height)};
 }
+
