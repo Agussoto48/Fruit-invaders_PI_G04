@@ -8,7 +8,7 @@ class Disparo{
         int speed;
 
     public:
-        Disparo(Vector2 position, int speed);
+        Disparo(Vector2 position, int speed, bool esDelEnemigo = false);
         void Update();
         void Draw();
         bool active;

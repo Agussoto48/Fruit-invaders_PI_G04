@@ -2,47 +2,46 @@
 #include <iostream> 
 #define ESCALA 0.2f
 
-// Declarar funciones externas de ensamblador
-extern "C" void moverEnemigo(int direction, Vector2* pos);
-extern "C" void moverEnemigoAbajo(int distance, Vector2* pos, float limiteInferior);
+// Declarar la función unificada de ensamblador
+extern "C" int movimientoEnemigo(int tipo, int parametro, Vector2* pos, float limite);
 
 Texture2D Enemigo::enemigoImages[3] = {};
 
-Enemigo::Enemigo(int type, Vector2 position)
+Enemigo::Enemigo(EnemigoTipo type, Vector2 position)
 {
     this->type = type;
     this->position = position;
     
-    if(enemigoImages[type-1].id==0){
+    int typeIndex = static_cast<int>(type);
+
+    if(enemigoImages[typeIndex].id==0){
 
     switch(type){
-        case 1:
-            enemigoImages[0] = LoadTexture("sprites/Manzana.png");
-            break;
-        case 2:
-            enemigoImages[1] = LoadTexture("sprites/Piña.png");
-            break;
-        case 3:
-            enemigoImages[2] = LoadTexture("sprites/Sandia.png");
-            break;
-        default:
-            enemigoImages[0] = LoadTexture("sprites/Manzana.png");
-            break;
-    }
+            case EnemigoTipo::MANZANA:
+                enemigoImages[0] = LoadTexture("sprites/Manzana.png");
+                break;
+            case EnemigoTipo::PINA:
+                enemigoImages[1] = LoadTexture("sprites/Piña.png");
+                break;
+            case EnemigoTipo::SANDIA:
+                enemigoImages[2] = LoadTexture("sprites/Sandia.png");
+                break;
+        }
     }
 }
 
 void Enemigo::Draw(){
-    DrawTextureV(enemigoImages[type - 1],position, WHITE);
+    int typeIndex = static_cast<int>(type);
+    DrawTextureV(enemigoImages[typeIndex], position, WHITE);
 }
 
-int Enemigo::GetType(){
+EnemigoTipo Enemigo::GetType(){
     return type;
 }
 
 void Enemigo::UnloadImages(){
     for(int i = 0; i < 3 ; ++i){
-        if(enemigoImages[i].id != 0){  //Se supone que cone sta verificacion ya no da segmentation fault
+        if(enemigoImages[i].id != 0){
             UnloadTexture(enemigoImages[i]);
             enemigoImages[i].id = 0;
         }
@@ -50,18 +49,22 @@ void Enemigo::UnloadImages(){
 }
 
 void Enemigo::Update(int direction){
-    // Llamar a la función de ensamblador para mover el enemigo
-    moverEnemigo(direction, &position);
+    // Llamar con tipo 0 (horizontal)
+    movimientoEnemigo(0, direction, &position, 0.0f);
 }
 
-void Enemigo::MoveDown(int distance){
-
+bool Enemigo::MoveDown(int distance){
     float limiteInferior = GetScreenHeight() - 150.0f;
     
-    // Llamar a la función de ensamblador para mover el enemigo hacia abajo
-    moverEnemigoAbajo(distance, &position, limiteInferior);
+    // Llamar con tipo 1 (abajo) y verificar retorno
+    int alcanzoLimite = movimientoEnemigo(1, distance, &position, limiteInferior);
+    
+    // Retornar true si alcanzó el límite (game over)
+    return (alcanzoLimite == 1);
 }
 
 Rectangle Enemigo::getRect() {
-    return {position.x, position.y, float(enemigoImages[type - 1].width), float(enemigoImages[type - 1].height)};
+    int typeIndex = static_cast<int>(type); 
+    return {position.x, position.y, float(enemigoImages[typeIndex].width), float(enemigoImages[typeIndex].height)};
 }
+
