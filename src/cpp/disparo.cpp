@@ -3,9 +3,14 @@
 #define ESCALA 0.2f
 
 
-Disparo::Disparo(Vector2 position, int speed) 
+Disparo::Disparo(Vector2 position, int speed, bool esDelEnemigo) 
 {
-    cuchillo = LoadTexture("sprites/Cuchillo.png");
+    if(esDelEnemigo) {
+        cuchillo = LoadTexture("sprites/Semilla.png");  // Semilla para enemigos
+    } 
+    else {
+        cuchillo = LoadTexture("sprites/Cuchillo.png");  // Cuchillo para jugador
+    }
     this->position = position;
     this->speed = speed;
     active = true;

@@ -185,7 +185,7 @@ void Combate::disparoEnemigo()
         Enemigo &enemigo = enemigos[randomIndex];
         enemigoDisparos.push_back(Disparo({enemigo.position.x + enemigo.enemigoImages[enemigo.type - 1].width / 2,
                                            enemigo.position.y + enemigo.enemigoImages[enemigo.type - 1].height},
-                                          6));
+                                          6, true));
         ultimoDisparoEnemigo = GetTime();
     }
 }
