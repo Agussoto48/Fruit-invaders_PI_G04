@@ -14,7 +14,7 @@ public:
 
     // Métodos
     void Update(int direction); //actualiza la posicion del enemigo, ya esta en ensambla
-    void MoveDown(int distance);  // Metodo en ensamblador para mover arriba y abajo
+    bool MoveDown(int distance);  // Metodo en ensamblador para mover arriba y abajo
     void Draw(); //pone las imagenes de los enemigos
     int GetType(); //da el tipo de enemigo, sandia, manzana o pineapple
     static void UnloadImages(); //quita las imagenes cuando se cierra el juego por optimizacion

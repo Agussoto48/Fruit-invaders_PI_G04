@@ -2,9 +2,8 @@
 #include <iostream> 
 #define ESCALA 0.2f
 
-// Declarar funciones externas de ensamblador
-extern "C" void moverEnemigo(int direction, Vector2* pos);
-extern "C" void moverEnemigoAbajo(int distance, Vector2* pos, float limiteInferior);
+// Declarar la función unificada de ensamblador
+extern "C" int movimientoEnemigo(int tipo, int parametro, Vector2* pos, float limite);
 
 Texture2D Enemigo::enemigoImages[3] = {};
 
@@ -42,7 +41,7 @@ int Enemigo::GetType(){
 
 void Enemigo::UnloadImages(){
     for(int i = 0; i < 3 ; ++i){
-        if(enemigoImages[i].id != 0){  //Se supone que cone sta verificacion ya no da segmentation fault
+        if(enemigoImages[i].id != 0){
             UnloadTexture(enemigoImages[i]);
             enemigoImages[i].id = 0;
         }
@@ -50,16 +49,18 @@ void Enemigo::UnloadImages(){
 }
 
 void Enemigo::Update(int direction){
-    // Llamar a la función de ensamblador para mover el enemigo
-    moverEnemigo(direction, &position);
+    // Llamar con tipo 0 (horizontal)
+    movimientoEnemigo(0, direction, &position, 0.0f);
 }
 
-void Enemigo::MoveDown(int distance){
-
+bool Enemigo::MoveDown(int distance){
     float limiteInferior = GetScreenHeight() - 150.0f;
     
-    // Llamar a la función de ensamblador para mover el enemigo hacia abajo
-    moverEnemigoAbajo(distance, &position, limiteInferior);
+    // Llamar con tipo 1 (abajo) y verificar retorno
+    int alcanzoLimite = movimientoEnemigo(1, distance, &position, limiteInferior);
+    
+    // Retornar true si alcanzó el límite (game over)
+    return (alcanzoLimite == 1);
 }
 
 Rectangle Enemigo::getRect() {

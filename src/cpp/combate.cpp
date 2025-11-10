@@ -171,7 +171,12 @@ void Combate::moverAbajoEnemigos(int distance)
 {
     for (auto &enemigo : enemigos)
     {
-        enemigo.MoveDown(distance);
+        bool alcanzoLimite = enemigo.MoveDown(distance);
+        if(alcanzoLimite) {
+            std::cout << "*** GAME OVER DETECTADO ***" << std::endl;
+            GameOver();
+            return;
+        }
     }
 }
 
@@ -300,8 +305,8 @@ void Combate::checkForCollisions()
 
 void Combate::GameOver(){
     run = false;
-
 }
+
 void Combate::InitGame(){
     enemigos = crearEnemigos();
     direccionEnemigos = 1;
