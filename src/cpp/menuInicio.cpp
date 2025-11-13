@@ -2,6 +2,7 @@
 #define ESCALA 0.2f
 void MenuInicio::Reset()
 {
+
 }
 void MenuInicio::InitMenuInicio()
 {
@@ -12,13 +13,18 @@ void MenuInicio::InitMenuInicio()
     cuchillo = LoadTexture("sprites/Cuchillo.png");
     boton_play = LoadTexture("sprites/Play_button.png");
     boton_quit = LoadTexture("sprites/Quit_button.png");
+    logo = LoadTexture("sprites/Main_logo.png");
 
     position_cuchillo.x = 750.0f;
     position_cuchillo.y = 650.0f;
+
     position_play.x = 400.0f;
     position_play.y = 400.0f;
     position_quit.x = 440.0f;
     position_quit.y = 600.0f;
+
+    position_logo.x = 340.0f;
+    position_logo.y = -160.0f;
 }
 MenuInicio::MenuInicio()
 {
@@ -32,6 +38,7 @@ void MenuInicio::Draw()
     DrawTextureEx(cuchillo, position_cuchillo, 270.0, 0.5, WHITE);
     DrawTextureEx(boton_play, position_play, 0.0, 0.6, WHITE);
     DrawTextureEx(boton_quit, position_quit, 0.0, 0.5, WHITE);
+    DrawTextureEx(logo, position_logo, 0.0, 1.3f, WHITE);
 }
 void MenuInicio::Update()
 {
@@ -42,21 +49,27 @@ void MenuInicio::Inputs()
 
     if (run)
     {
-        if (IsKeyDown(KEY_UP))
+        if (IsKeyPressed(KEY_UP))
         {
             if (opcion != START)
             {
                 opcion = START;
             }
+            else
+            {
+                opcion = QUIT;
+            }
         }
-        else if (IsKeyDown(KEY_DOWN))
+        else if (IsKeyPressed(KEY_DOWN))
         {
             if (opcion != QUIT)
             {
                 opcion = QUIT;
             }
+            else
+                opcion = START;
         }
-        else if (IsKeyDown(KEY_ENTER))
+        else if (IsKeyPressed(KEY_ENTER))
         {
             if (opcion == START)
             {

@@ -24,11 +24,11 @@ private:
     void checkForCollisions();
 
     void GameOver();
-    void Reset();
     void InitGame();
 public:
     Combate();
     ~Combate();
+    void Reset();
     void Draw();
     void Update();
     void Inputs();

@@ -19,14 +19,13 @@ private:
     Texture2D cuchillo;
     Texture2D boton_play;
     Texture2D boton_quit;
-    Texture2D Logo;
+    Texture2D logo;
 
     Vector2 position_cuchillo;
     Vector2 position_play;
     Vector2 position_quit;
     Vector2 position_logo;
 
-    void Reset();
     void InitMenuInicio();
     void GameStart();
     void actualizarCuchillo();
@@ -37,6 +36,7 @@ private:
 public:
     MenuInicio();
     ~MenuInicio();
+    void Reset();
     void Draw();
     void Update();
     void Inputs();

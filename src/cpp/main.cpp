@@ -1,6 +1,7 @@
 #include <raylib.h>
 #include "include/combate.h"
 #include "include/menuInicio.h"
+#include "include/gameOver.h"
 #include <string>
 #include <iostream>
 
@@ -21,19 +22,40 @@ int main()
     {
         Combate combate;
         MenuInicio menuInicio;
-
+        GameOver gameOver;
+        
+        menuInicio.run = false;
+        gameOver.run = true;
         while (!WindowShouldClose() && !menuInicio.quit)
         {
             frameCounter++;
-            if(menuInicio.run)
+            if (menuInicio.run)
             {
                 menuInicio.Inputs();
                 menuInicio.Update();
+                if(!menuInicio.run)
+                {
+                    combate.run = true;
+                }
             }
             if (combate.run)
             {
                 combate.Inputs();
                 combate.Update();
+                if(!combate.run)
+                {   
+                    combate.Reset();
+                    gameOver.run = true;
+                }
+            }
+            if(gameOver.run)
+            {
+                gameOver.Inputs();
+                gameOver.Update();
+                if(!gameOver.run)
+                {
+                    menuInicio.run = true;
+                }
             }
 
             BeginDrawing();
@@ -44,16 +66,16 @@ int main()
                 {0, 0, (float)GetScreenWidth(), (float)GetScreenHeight()}, // destino en pantalla
                 {0, 0}, 0.0f, Fade(GRAY, 0.9f)                             // Opacidad con respecto a un color
             );
-            if(menuInicio.run)
+            if (menuInicio.run)
             {
-                if(frameCounter >= 20)
+                if (frameCounter >= 20)
                 {
                     menuInicio.animacionCuchillo();
                     frameCounter = 0;
                 }
                 menuInicio.Draw();
             }
-            else if (combate.run)
+            if (combate.run)
             {
                 DrawTextEx(font, "Level 01", {1050, 20}, 34, 2, YELLOW);
                 float posX = (GetScreenWidth() - scoreIcono.width * ESCALA) / 2 - 50;
@@ -78,10 +100,10 @@ int main()
 
                 combate.Draw();
             }
-            else
+            if(gameOver.run)
             {
-                //Game over screen
-                DrawTextEx(font, "Game Over", {1000, 20}, 34, 2, YELLOW);
+                gameOver.Draw();
+                // DrawTextEx(font, "Game Over", {1000, 20}, 34, 2, YELLOW);
             }
 
             EndDrawing();
