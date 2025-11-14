@@ -17,15 +17,15 @@ int main()
     Font font = LoadFontEx("Font/monogram.ttf", 54, 0, 0);
     Texture2D chefVidas = LoadTexture("sprites/Chef.png");
     Texture2D scoreIcono = LoadTexture("sprites/score.png");
+    Color grisSuave = {50, 50, 50, 255};
     int frameCounter = 0;
     SetTargetFPS(60);
     {
         Combate combate;
         MenuInicio menuInicio;
         GameOver gameOver;
-        
-        menuInicio.run = false;
-        gameOver.run = true;
+        int lastScore = 0;
+        Color colorBackground = GRAY;
         while (!WindowShouldClose() && !menuInicio.quit)
         {
             frameCounter++;
@@ -33,7 +33,7 @@ int main()
             {
                 menuInicio.Inputs();
                 menuInicio.Update();
-                if(!menuInicio.run)
+                if (!menuInicio.run)
                 {
                     combate.run = true;
                 }
@@ -42,18 +42,21 @@ int main()
             {
                 combate.Inputs();
                 combate.Update();
-                if(!combate.run)
-                {   
+                if (!combate.run)
+                {
+                    colorBackground = grisSuave;
+                    lastScore = combate.score;
                     combate.Reset();
                     gameOver.run = true;
                 }
             }
-            if(gameOver.run)
+            if (gameOver.run)
             {
                 gameOver.Inputs();
                 gameOver.Update();
-                if(!gameOver.run)
+                if (!gameOver.run)
                 {
+                    colorBackground = GRAY;
                     menuInicio.run = true;
                 }
             }
@@ -64,7 +67,7 @@ int main()
                 background,                                                // textura
                 {0, 0, (float)background.width, (float)background.height}, // área original
                 {0, 0, (float)GetScreenWidth(), (float)GetScreenHeight()}, // destino en pantalla
-                {0, 0}, 0.0f, Fade(GRAY, 0.9f)                             // Opacidad con respecto a un color
+                {0, 0}, 0.0f, Fade(colorBackground, 0.9f)                  // Opacidad con respecto a un color
             );
             if (menuInicio.run)
             {
@@ -93,17 +96,20 @@ int main()
                 float x = 25.0;
                 for (int i = 0; i < combate.lives; i++)
                 {
-                    // DrawTextureV(chefVidas, {x, 30}, WHITE);
                     DrawTextureEx(chefVidas, {x, 0}, 0.0, ESCALA, WHITE);
                     x += 50;
                 }
 
                 combate.Draw();
             }
-            if(gameOver.run)
+            if (gameOver.run)
             {
-                gameOver.Draw();
-                // DrawTextEx(font, "Game Over", {1000, 20}, 34, 2, YELLOW);
+                if (frameCounter >= 20)
+                {
+                    gameOver.animacionSemillas();
+                    frameCounter = 0;
+                }
+                gameOver.Draw(lastScore);
             }
 
             EndDrawing();
