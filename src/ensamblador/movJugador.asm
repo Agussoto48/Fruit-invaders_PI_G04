@@ -2,13 +2,16 @@ section .data
     vel: dd 7.0
 
 section .text
-global moverJugadorIzquierda
-global moverJugadorDerecha
+global moverJugador
 
 
 ; void moverJugadorIzquierda(float left, Vector2* pos)
 ; xmm0 es el primer parametro float, entonces left
 ; y rdi es el primer parametro puntero, osea pos 
+moverJugador:
+    test esi, esi                   ; verificar direccion
+    jnz moverJugadorDerecha
+
 moverJugadorIzquierda:
     mov rax, rdi                   
     movss xmm1, dword [vel]        
