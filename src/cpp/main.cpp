@@ -2,6 +2,7 @@
 #include "include/combate.h"
 #include "include/menuInicio.h"
 #include "include/gameOver.h"
+#include "include/pausado.h"
 #include <string>
 #include <iostream>
 
@@ -19,13 +20,18 @@ int main()
     Texture2D scoreIcono = LoadTexture("sprites/score.png");
     Color grisSuave = {50, 50, 50, 255};
     int frameCounter = 0;
+
+
     SetTargetFPS(60);
     {
         Combate combate;
         MenuInicio menuInicio;
         GameOver gameOver;
+        Pausado pausa;
         int lastScore = 0;
         Color colorBackground = GRAY;
+
+        
         while (!WindowShouldClose() && !menuInicio.quit)
         {
             frameCounter++;
@@ -38,7 +44,23 @@ int main()
                     combate.run = true;
                 }
             }
-            if (combate.run)
+            if (pausa.run)
+            {
+                pausa.Inputs();
+                pausa.Update();
+                if (!pausa.run)
+                {
+                    combate.pausado = false;
+                }
+                if (pausa.exit)
+                {
+                    pausa.Reset();
+                    combate.Reset();
+                    lastScore = 0;
+                    menuInicio.run = true;
+                }
+            }
+            if (combate.run && !combate.pausado)
             {
                 combate.Inputs();
                 combate.Update();
@@ -48,6 +70,10 @@ int main()
                     lastScore = combate.score;
                     combate.Reset();
                     gameOver.run = true;
+                }
+                if(combate.pausado)
+                {
+                    pausa.run = true;
                 }
             }
             if (gameOver.run)
@@ -78,7 +104,16 @@ int main()
                 }
                 menuInicio.Draw();
             }
-            if (combate.run)
+            if (pausa.run)
+            {
+                if(frameCounter >= 20)
+                {
+                    pausa.animacionCuchillo();
+                    frameCounter = 0;
+                }
+                pausa.Draw();
+            }
+            if (combate.run && !combate.pausado)
             {
                 DrawTextEx(font, "Level 01", {1050, 20}, 34, 2, YELLOW);
                 float posX = (GetScreenWidth() - scoreIcono.width * ESCALA) / 2 - 50;

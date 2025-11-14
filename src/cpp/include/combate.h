@@ -33,6 +33,7 @@ public:
     void Update();
     void Inputs();
     bool run;
+    bool pausado;
     int lives;
     int score;
 };

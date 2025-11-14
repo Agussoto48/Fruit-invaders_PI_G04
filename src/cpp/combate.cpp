@@ -85,6 +85,10 @@ void Combate::Inputs()
         {
             jugador.Disparar();
         }
+        else if(IsKeyPressed(KEY_P))
+        {
+            pausado = true;
+        }
     }
 }
 
@@ -325,6 +329,7 @@ void Combate::InitGame()
     ultimoDisparoEnemigo = 0;
     lives = 3;
     run = false;
+    pausado = false;
     score = 0;
     obstacles = CreateObstacle();
 }
