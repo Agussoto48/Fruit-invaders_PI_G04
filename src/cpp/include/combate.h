@@ -26,6 +26,7 @@ private:
     void GameOver();
     void Reset();
     void InitGame();
+    void NextLevel();
 public:
     Combate();
     ~Combate();
@@ -35,4 +36,5 @@ public:
     bool run;
     int lives;
     int score;
+    int level;
 };

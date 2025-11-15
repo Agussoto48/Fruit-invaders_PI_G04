@@ -32,9 +32,13 @@ int main() {
             { 0, 0, (float)GetScreenWidth(), (float)GetScreenHeight() }, // destino en pantalla
             { 0, 0 }, 0.0f, Fade(GRAY, 0.9f)                             // Opacidad con respecto a un color
         );
-        if(combate.run)
-        {
-            DrawTextEx(font, "Level 01", {1050, 20}, 34, 2, YELLOW);
+        if(combate.run) {
+            std::string levelText = "Level ";
+            if(combate.level < 10) {
+                levelText += "0";
+            }
+            levelText += std::to_string(combate.level);
+            DrawTextEx(font, levelText.c_str(), {1050, 20}, 34, 2, YELLOW);
         }
         else
         {

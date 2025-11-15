@@ -29,6 +29,10 @@ void Combate::Update()
 
         EliminarDisparoInactivo();
         checkForCollisions();
+
+        if(enemigos.empty()){
+            NextLevel();
+        }
     }
     else {
         if(IsKeyDown(KEY_ENTER)){
@@ -37,6 +41,19 @@ void Combate::Update()
             InitGame();
         }
     }
+}
+
+void Combate::NextLevel() {
+    level++;
+    enemigos = crearEnemigos();
+    direccionEnemigos = 1;
+    
+    // Revisar el hecho de aumentar dificultad
+    // Por ejemplo, reducir el intervalo de disparo
+    // disparoEnemigoIntervalo -= 0.02;
+    
+    // Limpiar disparos enemigos en pantalla
+    enemigoDisparos.clear();
 }
 
 void Combate::Draw()
@@ -121,7 +138,7 @@ std::vector<Enemigo> Combate::crearEnemigos()
     std::vector<Enemigo> enemigos;
     for (int fila = 0; fila < 5; ++fila)
     {
-        for (int columna = 0; columna < 11; ++columna)
+        for (int columna = 0; columna < 5; ++columna)
         {
 
             EnemigoTipo enemigoType;
@@ -325,6 +342,7 @@ void Combate::InitGame(){
     lives = 3;
     run = true;
     score = 0;
+    level = 1;
     obstacles = CreateObstacle();
 }
 
