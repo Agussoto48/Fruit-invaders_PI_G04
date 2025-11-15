@@ -2,6 +2,8 @@
 #include <iostream>
 #define cellSize 100
 
+extern "C" int asm_calcular_puntaje(int tipo_enemigo);
+
 Combate::Combate()
 {
     InitGame();
@@ -249,17 +251,10 @@ void Combate::checkForCollisions()
         {
             if (CheckCollisionRecs(it->getRect(), disparo.getRect()))
             {
-                switch(it->type) {
-                    case EnemigoTipo::MANZANA:
-                        score += 10;
-                        break;
-                    case EnemigoTipo::PINA:
-                        score += 20;
-                        break;
-                    case EnemigoTipo::SANDIA:
-                        score += 30;
-                        break;
-                }
+                //Calculo del puntaje llamando a la funcion de ensamblador, misma logica de antes
+                //Manzana(10) Pina(20) Sandia(30)
+                int tipoEnemigo = static_cast<int>(it->type);
+                score += asm_calcular_puntaje(tipoEnemigo);
                 
                 it = enemigos.erase(it);
                 disparo.active = false;
