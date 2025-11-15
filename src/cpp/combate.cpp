@@ -48,9 +48,15 @@ void Combate::NextLevel() {
     enemigos = crearEnemigos();
     direccionEnemigos = 1;
     
-    //Reducir el intervalo hasta un miniomo
+    // Aumentar velocidad de movimiento (máximo 2.5x)
+    if(Enemigo::velocidadMultiplicador < 2.5f) {
+        Enemigo::velocidadMultiplicador += 0.15f;
+    }
+
+    //Reducir el intervalo hasta un miniomo, esto es la velocidad 
+    //y frecuencia con la que el enemigo dispara
     if(disparoEnemigoIntervalo > 0.15) {
-        disparoEnemigoIntervalo -= 0.02;
+        disparoEnemigoIntervalo -= 0.01;
     }
     //ESTO HACE QUE DESPUES DE CADA 3 NIVELES
     //LOS ESCUDOS SE VUELVAN A CREAR 
@@ -138,14 +144,10 @@ void Combate::EliminarDisparoInactivo()
         }
     }
 }
-std::vector<Enemigo> Combate::crearEnemigos()
-{
+std::vector<Enemigo> Combate::crearEnemigos(){
     std::vector<Enemigo> enemigos;
-    for (int fila = 0; fila < 1; ++fila)
-    {
-        for (int columna = 0; columna < 1; ++columna)
-        {
-
+    for (int fila = 0; fila < 5; ++fila){ //SI QUIEREN CREAR MAS O MENOS ENEMIGOS, ES AQUI
+        for (int columna = 0; columna < 5; ++columna){
             EnemigoTipo enemigoType;
             if (fila == 0)
             {
@@ -349,6 +351,7 @@ void Combate::InitGame(){
     score = 0;
     level = 1;
     disparoEnemigoIntervalo = 0.35;
+    Enemigo::velocidadMultiplicador = 1.0f;
     obstacles = CreateObstacle();
 }
 

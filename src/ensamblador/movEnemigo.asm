@@ -10,6 +10,7 @@ global movimientoEnemigo
 ;   esi = parámetro int (direction para horizontal, distance para abajo)
 ;   rdx = puntero a Vector2
 ;   xmm0 = limiteInferior (float, solo para tipo 1)
+;   xmm1 = velocidad multiplicador (float, nuevo parámetro)
 ; Retorna en EAX: 0 = normal, 1 = alcanzó límite inferior (GAME OVER)
 
 movimientoEnemigo:
@@ -22,8 +23,10 @@ movimientoEnemigo:
     mov rbx, rdx                    ; rbx = puntero a Vector2
     movss xmm2, xmm0                ; xmm2 = limiteInferior (backup)
     cvtsi2ss xmm0, esi              ; xmm0 = distance como float
+    movss xmm3, xmm1                ; xmm3 = velocidad (backup)
+    mulss xmm0, xmm3                ; distance *= velocidad
     movss xmm1, dword [rbx + 4]     ; xmm1 = position.y actual
-    addss xmm1, xmm0                ; position.y += distance
+    addss xmm1, xmm0                ; position.y += distance * velocidad
     
     ; Verificar si alcanzó/superó el límite inferior
     ; Si position.y >= limiteInferior, entonces GAME OVER
@@ -47,9 +50,10 @@ movimientoEnemigo:
 .horizontal:
     mov rax, rdx                    ; rax = puntero a Vector2
     cvtsi2ss xmm0, esi              ; xmm0 = direction como float
-    movss xmm1, dword [rax]         ; xmm1 = position.x actual
-    addss xmm1, xmm0                ; position.x += direction
-    movss dword [rax], xmm1         ; guardar x
+    mulss xmm0, xmm1                ; direction *= velocidad
+    movss xmm2, dword [rax]         ; xmm2 = position.x actual
+    addss xmm2, xmm0                ; position.x += direction * velocidad
+    movss dword [rax], xmm2
     xor eax, eax                    ; retornar 0 (todo bien)
     ret
 
