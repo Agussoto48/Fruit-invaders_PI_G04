@@ -48,11 +48,16 @@ void Combate::NextLevel() {
     enemigos = crearEnemigos();
     direccionEnemigos = 1;
     
-    // Revisar el hecho de aumentar dificultad
-    // Por ejemplo, reducir el intervalo de disparo
-    // disparoEnemigoIntervalo -= 0.02;
-    
-    // Limpiar disparos enemigos en pantalla
+    //Reducir el intervalo hasta un miniomo
+    if(disparoEnemigoIntervalo > 0.15) {
+        disparoEnemigoIntervalo -= 0.02;
+    }
+    //ESTO HACE QUE DESPUES DE CADA 3 NIVELES
+    //LOS ESCUDOS SE VUELVAN A CREAR 
+    if(level % 3 == 1) {
+        obstacles = CreateObstacle();
+    }
+
     enemigoDisparos.clear();
 }
 
@@ -136,9 +141,9 @@ void Combate::EliminarDisparoInactivo()
 std::vector<Enemigo> Combate::crearEnemigos()
 {
     std::vector<Enemigo> enemigos;
-    for (int fila = 0; fila < 5; ++fila)
+    for (int fila = 0; fila < 1; ++fila)
     {
-        for (int columna = 0; columna < 5; ++columna)
+        for (int columna = 0; columna < 1; ++columna)
         {
 
             EnemigoTipo enemigoType;
@@ -343,6 +348,7 @@ void Combate::InitGame(){
     run = true;
     score = 0;
     level = 1;
+    disparoEnemigoIntervalo = 0.35;
     obstacles = CreateObstacle();
 }
 
