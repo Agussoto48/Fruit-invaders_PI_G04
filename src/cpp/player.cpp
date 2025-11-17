@@ -1,7 +1,11 @@
 #include "include/player.h"
 #define ESCALA 0.2f
-extern "C" void moverJugadorIzquierda(float, Vector2*);
-extern "C" void moverJugadorDerecha(float, Vector2*);
+enum direcciones
+{
+    IZQ = 0,
+    DER = 1
+};
+extern "C" void moverJugador(float, Vector2*, int);
 
 // Constructores y destructores
 Player::Player()
@@ -24,14 +28,14 @@ void Player::Draw(){
  */
 void Player::MoveLeft(){
     float leftLimit = 0.0f;
-    moverJugadorIzquierda(leftLimit, &position);
+    moverJugador(leftLimit, &position, IZQ);
 }
 /**
  * @brief Funcion para mover el personaje a la derecha, llamando a una funcion en asm
  */
 void Player::MoveRight(){
     float rightLimit = (float)(GetScreenWidth() - (chef.width * ESCALA));
-    moverJugadorDerecha(rightLimit, &position);
+    moverJugador(rightLimit, &position, DER);
 }
 
 void Player::Disparar(){
