@@ -1,5 +1,5 @@
 #include "include/player.h"
-#define ESCALA 0.2f
+#define ESCALA 0.3f
 extern "C" void moverJugadorIzquierda(float, Vector2*);
 extern "C" void moverJugadorDerecha(float, Vector2*);
 
@@ -17,7 +17,7 @@ Player::~Player(){
  * @brief Funcion para imprimir el personaje en la ventana
  */
 void Player::Draw(){
-    DrawTextureEx(chef, position, 0.0 , 0.2f , WHITE);
+    DrawTextureEx(chef, position, 0.0 , 0.3f , WHITE);
 }
 /**
  * @brief Funcion para mover el personaje a la izquierda, llamando a una funcion en asm
@@ -50,8 +50,6 @@ Rectangle Player::getRect() {
     rectangle.y = position.y;
     rectangle.width = ancho / 2;
     rectangle.height = alto;
-
-    return rectangle;
 
     return rectangle;
 }
