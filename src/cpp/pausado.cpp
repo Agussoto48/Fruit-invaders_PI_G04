@@ -106,7 +106,7 @@ void Pausado::animacionCuchillo()
     if (posicion_horizontal_cuchillo == LEFT)
     {
 
-        position_cuchillo.x += 150;
+        position_cuchillo.x += 150.0f;
         posicion_horizontal_cuchillo = RIGHT;
     }
     else

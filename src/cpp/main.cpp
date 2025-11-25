@@ -34,6 +34,7 @@ int main()
         
         while (!WindowShouldClose() && !menuInicio.quit)
         {
+            //Leer inputs y actualizar
             frameCounter++;
             if (menuInicio.run)
             {
@@ -87,6 +88,7 @@ int main()
                 }
             }
 
+            //Imprimir en pantalla
             BeginDrawing();
             ClearBackground(GRAY);
             DrawTexturePro(
