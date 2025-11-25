@@ -37,8 +37,7 @@ int main()
         int lastScore = 0;
         Color colorBackground = GRAY;
         int vidas_actuales = combate.lives;
-
-        while (!WindowShouldClose() && !menuInicio.quit)
+    while(!WindowShouldClose()){
         {
             // Leer inputs y actualizar
             musica.Update();
@@ -81,6 +80,12 @@ int main()
             {
                 combate.Inputs();
                 combate.Update();
+                std::string levelText = "Level ";
+                if(combate.level < 10) {
+                  levelText += "0";
+                }
+            levelText += std::to_string(combate.level);
+            DrawTextEx(font, levelText.c_str(), {1050, 20}, 34, 2, YELLOW);
                 if (vidas_actuales > combate.lives)
                 {
                     musica.SetVelocidad(1.0 + aumento_musica);

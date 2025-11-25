@@ -3,9 +3,10 @@
 #define ESCALA 0.2f
 
 // Declarar la función unificada de ensamblador
-extern "C" int movimientoEnemigo(int tipo, int parametro, Vector2* pos, float limite);
+extern "C" int movimientoEnemigo(int tipo, int parametro, Vector2* pos, float limite, float velocidad);
 
 Texture2D Enemigo::enemigoImages[3] = {};
+float Enemigo::velocidadMultiplicador = 1.0f;
 
 Enemigo::Enemigo(EnemigoTipo type, Vector2 position)
 {
@@ -50,14 +51,14 @@ void Enemigo::UnloadImages(){
 
 void Enemigo::Update(int direction){
     // Llamar con tipo 0 (horizontal)
-    movimientoEnemigo(0, direction, &position, 0.0f);
+    movimientoEnemigo(0, direction, &position, 0.0f, velocidadMultiplicador);
 }
 
 bool Enemigo::MoveDown(int distance){
     float limiteInferior = GetScreenHeight() - 150.0f;
     
     // Llamar con tipo 1 (abajo) y verificar retorno
-    int alcanzoLimite = movimientoEnemigo(1, distance, &position, limiteInferior);
+    int alcanzoLimite = movimientoEnemigo(1, distance, &position, limiteInferior, velocidadMultiplicador);
     
     // Retornar true si alcanzó el límite (game over)
     return (alcanzoLimite == 1);
