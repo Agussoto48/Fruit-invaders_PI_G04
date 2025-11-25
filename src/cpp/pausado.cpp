@@ -32,10 +32,10 @@ void Pausado::actualizarCuchillo()
     switch (opcion)
     {
     case CONTINUE:
-        position_cuchillo = {700.0f, 595.0f};
+        position_cuchillo.y = 595.0f;
         break;
     case EXIT:
-        position_cuchillo = {650.0f,730.0f};
+        position_cuchillo.y = 730.0f;
         break;
     default:
         break;
@@ -106,13 +106,13 @@ void Pausado::animacionCuchillo()
     if (posicion_horizontal_cuchillo == LEFT)
     {
 
-        position_cuchillo.x += 150.0f;
+        position_cuchillo.x += 100.0f;
         posicion_horizontal_cuchillo = RIGHT;
     }
     else
     {
         
-        position_cuchillo.x -= 150.0f;
+        position_cuchillo.x -= 100.0f;
         posicion_horizontal_cuchillo = LEFT;
     }
 }

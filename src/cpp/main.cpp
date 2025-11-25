@@ -26,6 +26,7 @@ int main()
 
     Color grisSuave = {50, 50, 50, 255};
     int frameCounter = 0;
+    float aumento_musica = 0.1f;
 
     SetTargetFPS(60);
     {
@@ -35,6 +36,7 @@ int main()
         Pausado pausa;
         int lastScore = 0;
         Color colorBackground = GRAY;
+        int vidas_actuales = combate.lives;
 
         while (!WindowShouldClose() && !menuInicio.quit)
         {
@@ -79,6 +81,12 @@ int main()
             {
                 combate.Inputs();
                 combate.Update();
+                if (vidas_actuales > combate.lives)
+                {
+                    musica.SetVelocidad(1.0 + aumento_musica);
+                    aumento_musica += 0.1f;
+                    vidas_actuales = combate.lives;
+                }
                 if (!combate.run)
                 {
                     colorBackground = grisSuave;
@@ -86,6 +94,8 @@ int main()
                     combate.Reset();
                     musica.CambiarMenu();
                     musica.SetVolumen(0.5f);
+                    vidas_actuales = combate.lives;
+                    aumento_musica = 0.1f;
                     gameOver.run = true;
                 }
                 if (combate.pausado)
