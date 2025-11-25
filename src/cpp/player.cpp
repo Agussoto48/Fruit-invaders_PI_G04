@@ -1,5 +1,5 @@
 #include "include/player.h"
-#define ESCALA 0.2f
+#define ESCALA 0.3f
 enum direcciones
 {
     IZQ = 0,
@@ -21,7 +21,7 @@ Player::~Player(){
  * @brief Funcion para imprimir el personaje en la ventana
  */
 void Player::Draw(){
-    DrawTextureEx(chef, position, 0.0 , 0.2f , WHITE);
+    DrawTextureEx(chef, position, 0.0 , 0.3f , WHITE);
 }
 /**
  * @brief Funcion para mover el personaje a la izquierda, llamando a una funcion en asm

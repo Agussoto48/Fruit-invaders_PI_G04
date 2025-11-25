@@ -16,7 +16,8 @@ Combate::~Combate()
 
 void Combate::Update()
 {
-    if(run){ 
+    if (run)
+    {
         for (auto &disparo : jugador.disparos)
         {
             disparo.Update();
@@ -36,12 +37,9 @@ void Combate::Update()
             NextLevel();
         }
     }
-    else {
-        if(IsKeyDown(KEY_ENTER)){
-            //Aquí saltaría a la pantalla de gameover
-            Reset();
-            InitGame();
-        }
+    else
+    {
+        Reset();
     }
 }
 
@@ -91,20 +89,18 @@ void Combate::Draw()
         obstacle.Draw();
     }
 
-    /*
-    Para hacer debug
+    
     DrawRectangleLinesEx(jugador.getRect(), 1, BLUE);
     for (auto &enemigo : enemigos)
         DrawRectangleLinesEx(enemigo.getRect(), 1, GREEN);
     for (auto &disparo : enemigoDisparos)
         DrawRectangleLinesEx(disparo.getRect(), 1, RED);
     for (auto &disparo : jugador.disparos)
-        DrawRectangleLinesEx(disparo.getRect(), 1, RED);*/
-
+        DrawRectangleLinesEx(disparo.getRect(), 1, RED);
 }
 void Combate::Inputs()
 {
-    if(run)
+    if (run)
     {
         if (IsKeyDown(KEY_LEFT))
         {
@@ -117,6 +113,10 @@ void Combate::Inputs()
         else if (IsKeyDown(KEY_SPACE))
         {
             jugador.Disparar();
+        }
+        else if(IsKeyPressed(KEY_P))
+        {
+            pausado = true;
         }
     }
 }
@@ -200,7 +200,8 @@ void Combate::moverAbajoEnemigos(int distance)
     for (auto &enemigo : enemigos)
     {
         bool alcanzoLimite = enemigo.MoveDown(distance);
-        if(alcanzoLimite) {
+        if (alcanzoLimite)
+        {
             std::cout << "*** GAME OVER DETECTADO ***" << std::endl;
             GameOver();
             return;
@@ -208,21 +209,21 @@ void Combate::moverAbajoEnemigos(int distance)
     }
 }
 
-void Combate::disparoEnemigo(){
+void Combate::disparoEnemigo()
+{
     double tiempoActual = GetTime();
     if (tiempoActual - ultimoDisparoEnemigo >= disparoEnemigoIntervalo && !enemigos.empty())
     {
         int randomIndex = GetRandomValue(0, enemigos.size() - 1);
         Enemigo &enemigo = enemigos[randomIndex];
-        
-        int typeIndex = static_cast<int>(enemigo.type);  
-        
+
+        int typeIndex = static_cast<int>(enemigo.type);
+
         // usar inicialización correcta de Vector2
         Vector2 disparoPos = {
             enemigo.position.x + enemigo.enemigoImages[typeIndex].width / 2,
-            enemigo.position.y + enemigo.enemigoImages[typeIndex].height
-        };
-        
+            enemigo.position.y + enemigo.enemigoImages[typeIndex].height};
+
         enemigoDisparos.push_back(Disparo(disparoPos, 6, true));
         ultimoDisparoEnemigo = GetTime();
     }
@@ -251,6 +252,7 @@ void Combate::checkForCollisions()
         {
             if (CheckCollisionRecs(it->getRect(), disparo.getRect()))
             {
+
                 //Calculo del puntaje llamando a la funcion de ensamblador, misma logica de antes
                 //Manzana(10) Pina(20) Sandia(30)
                 int tipoEnemigo = static_cast<int>(it->type);
@@ -289,7 +291,7 @@ void Combate::checkForCollisions()
         {
             disparo.active = false;
             lives--;
-            if(lives == 0)
+            if (lives == 0)
             {
                 GameOver();
             }
@@ -331,18 +333,21 @@ void Combate::checkForCollisions()
             }
         }
     }
-} 
+}
 
-void Combate::GameOver(){
+void Combate::GameOver()
+{
     run = false;
 }
 
-void Combate::InitGame(){
+void Combate::InitGame()
+{
     enemigos = crearEnemigos();
     direccionEnemigos = 1;
     ultimoDisparoEnemigo = 0;
     lives = 3;
-    run = true;
+    run = false;
+    pausado = false;
     score = 0;
     level = 1;
     disparoEnemigoIntervalo = 0.35;
@@ -350,8 +355,11 @@ void Combate::InitGame(){
     obstacles = CreateObstacle();
 }
 
-void Combate::Reset(){
+void Combate::Reset()
+{
     enemigos.clear();
     enemigoDisparos.clear();
     obstacles.clear();
+
+    InitGame();
 }

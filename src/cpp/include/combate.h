@@ -23,16 +23,17 @@ private:
     void checkForCollisions();
 
     void GameOver();
-    void Reset();
     void InitGame();
     void NextLevel();
 public:
     Combate();
     ~Combate();
+    void Reset();
     void Draw();
     void Update();
     void Inputs();
     bool run;
+    bool pausado;
     int lives;
     int score;
     int level;
