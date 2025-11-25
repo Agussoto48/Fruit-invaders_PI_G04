@@ -4,23 +4,23 @@
 #include "include/gameOver.h"
 #include "include/pausado.h"
 #include <string>
-#include <iostream>
 
 #define ESCALA 0.2f
 
 int main()
 {
-
     int windowWidth = 1200;
     int windowHeight = 960;
     InitWindow(windowWidth, windowHeight, "Fruit Invaders");
+    
     Texture2D background = LoadTexture("sprites/kitchen.png");
-    Font font = LoadFontEx("Font/monogram.ttf", 54, 0, 0);
+    Texture2D cuttingBoard = LoadTexture("sprites/Cuttin_Board.png");
+    Texture2D scoreIcono = LoadTexture("sprites/Score.png");
     Texture2D chefVidas = LoadTexture("sprites/Chef.png");
-    Texture2D scoreIcono = LoadTexture("sprites/score.png");
+    Font font = LoadFontEx("Font/monogram.ttf", 54, 0, 0);
+    
     Color grisSuave = {50, 50, 50, 255};
     int frameCounter = 0;
-
 
     SetTargetFPS(60);
     {
@@ -31,11 +31,11 @@ int main()
         int lastScore = 0;
         Color colorBackground = GRAY;
 
-        
         while (!WindowShouldClose() && !menuInicio.quit)
         {
             //Leer inputs y actualizar
             frameCounter++;
+            
             if (menuInicio.run)
             {
                 menuInicio.Inputs();
@@ -45,6 +45,7 @@ int main()
                     combate.run = true;
                 }
             }
+            
             if (pausa.run)
             {
                 pausa.Inputs();
@@ -61,6 +62,7 @@ int main()
                     menuInicio.run = true;
                 }
             }
+            
             if (combate.run && !combate.pausado)
             {
                 combate.Inputs();
@@ -77,6 +79,7 @@ int main()
                     pausa.run = true;
                 }
             }
+            
             if (gameOver.run)
             {
                 gameOver.Inputs();
@@ -92,11 +95,12 @@ int main()
             BeginDrawing();
             ClearBackground(GRAY);
             DrawTexturePro(
-                background,                                                // textura
-                {0, 0, (float)background.width, (float)background.height}, // área original
-                {0, 0, (float)GetScreenWidth(), (float)GetScreenHeight()}, // destino en pantalla
-                {0, 0}, 0.0f, Fade(colorBackground, 0.9f)                  // Opacidad con respecto a un color
+                background,
+                {0, 0, (float)background.width, (float)background.height},
+                {0, 0, (float)GetScreenWidth(), (float)GetScreenHeight()},
+                {0, 0}, 0.0f, Fade(colorBackground, 0.9f)
             );
+            
             if (menuInicio.run)
             {
                 if (frameCounter >= 20)
@@ -106,6 +110,7 @@ int main()
                 }
                 menuInicio.Draw();
             }
+            
             if (pausa.run)
             {
                 if(frameCounter >= 20)
@@ -115,9 +120,37 @@ int main()
                 }
                 pausa.Draw();
             }
+            
             if (combate.run && !combate.pausado)
             {
+                // Dibujar la tabla de cortar rotada 180 grados con ancho y largo personalizados
+                if (cuttingBoard.id != 0) {
+                    // Controles separados para ancho y largo
+                    float boardScaleWidth = 4.55f;   // Escala horizontal (ancho)
+                    float boardScaleHeight = 1.7f;  // Escala vertical (largo)
+                    
+                    float centerX = GetScreenWidth() / 2.0f;
+                    float centerY = GetScreenHeight() - 455.0f;
+                    
+                    Rectangle source = {0, 0, (float)cuttingBoard.width, (float)cuttingBoard.height};
+                    Rectangle dest = {
+                        centerX,
+                        centerY,
+                        cuttingBoard.width * boardScaleWidth,   // Ancho personalizado
+                        cuttingBoard.height * boardScaleHeight  // Largo personalizado
+                    };
+                    
+                    // Rotar 180 grados con el origen en el centro
+                    DrawTexturePro(cuttingBoard, source, dest, 
+                                   {dest.width / 2, dest.height / 2}, 
+                                   180.0f, 
+                                   WHITE);
+                }
+                
+                combate.Draw();
+                
                 DrawTextEx(font, "Level 01", {1050, 20}, 34, 2, YELLOW);
+                
                 float posX = (GetScreenWidth() - scoreIcono.width * ESCALA) / 2 - 50;
                 float posY = 0.0;
                 DrawTextureEx(scoreIcono, {posX, posY}, 0.0f, ESCALA, WHITE);
@@ -136,9 +169,8 @@ int main()
                     DrawTextureEx(chefVidas, {x, 0}, 0.0, ESCALA, WHITE);
                     x += 50;
                 }
-
-                combate.Draw();
             }
+            
             if (gameOver.run)
             {
                 if (frameCounter >= 20)
@@ -152,7 +184,11 @@ int main()
             EndDrawing();
         }
     }
+    
     UnloadTexture(background);
+    UnloadTexture(cuttingBoard);
+    UnloadTexture(scoreIcono);
+    UnloadTexture(chefVidas);
     CloseWindow();
 
     return 0;
