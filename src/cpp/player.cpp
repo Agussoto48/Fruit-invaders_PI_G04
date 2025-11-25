@@ -1,9 +1,11 @@
 #include "include/player.h"
-
 #define ESCALA 0.3f
-extern "C" void moverJugadorIzquierda(float, Vector2*);
-extern "C" void moverJugadorDerecha(float, Vector2*);
-
+enum direcciones
+{
+    IZQ = 0,
+    DER = 1
+};
+extern "C" void moverJugador(float, Vector2*, int);
 
 // Constructores y destructores
 Player::Player()
@@ -52,6 +54,8 @@ Rectangle Player::getRect() {
     rectangle.y = position.y;
     rectangle.width = ancho / 2;
     rectangle.height = alto;
+
+    return rectangle;
 
     return rectangle;
 }
