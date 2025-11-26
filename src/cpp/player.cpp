@@ -1,5 +1,5 @@
 #include "include/player.h"
-#define ESCALA 0.2f
+#define ESCALA 0.3f
 enum direcciones
 {
     IZQ = 0,
@@ -21,7 +21,7 @@ Player::~Player(){
  * @brief Funcion para imprimir el personaje en la ventana
  */
 void Player::Draw(){
-    DrawTextureEx(chef, position, 0.0 , 0.2f , WHITE);
+    DrawTextureEx(chef, position, 0.0 , 0.3f , WHITE);
 }
 /**
  * @brief Funcion para mover el personaje a la izquierda, llamando a una funcion en asm
@@ -50,12 +50,10 @@ Rectangle Player::getRect() {
 
     float ancho = chef.width * ESCALA;
     float alto =  chef.height * ESCALA;
-    rectangle.x = position.x + ancho/4;
-    rectangle.y = position.y;
-    rectangle.width = ancho / 2;
-    rectangle.height = alto;
-
-    return rectangle;
+    rectangle.x = position.x + ancho/3;
+    rectangle.y = position.y + 25;
+    rectangle.width = ancho / 3.5;
+    rectangle.height = alto / 1.5;
 
     return rectangle;
 }

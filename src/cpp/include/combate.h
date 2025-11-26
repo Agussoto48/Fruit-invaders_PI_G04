@@ -14,9 +14,8 @@ private:
     void moverAbajoEnemigos(int distance);
     void disparoEnemigo();
     int direccionEnemigos;
-    //PARTE QUE FALTA IMPLEMENTAR DE ALIENS, QUE DISPAREN:
     std::vector<Disparo> enemigoDisparos;
-    constexpr static float disparoEnemigoIntervalo = 0.35;
+    float disparoEnemigoIntervalo;
     float ultimoDisparoEnemigo;
 
     std::vector<Obstacle> CreateObstacle();
@@ -24,15 +23,18 @@ private:
     void checkForCollisions();
 
     void GameOver();
-    void Reset();
     void InitGame();
+    void NextLevel();
 public:
     Combate();
     ~Combate();
+    void Reset();
     void Draw();
     void Update();
     void Inputs();
     bool run;
+    bool pausado;
     int lives;
     int score;
+    int level;
 };
