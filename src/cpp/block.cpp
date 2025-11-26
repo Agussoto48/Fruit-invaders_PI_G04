@@ -8,7 +8,6 @@ Block::Block(Vector2 position)
 
 void Block::Draw()
 {
-  // Llama a la rutina NASM (convierte float→int y llama DrawRectangle)
   asm_block_draw(position.x, position.y);
 }
 

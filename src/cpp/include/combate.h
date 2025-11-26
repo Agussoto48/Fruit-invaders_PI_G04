@@ -24,6 +24,10 @@ private:
 
     void GameOver();
     void InitGame();
+    
+    int arduinoFile;
+    bool SetupArduino();
+    void ReadArduinoInput();
     void NextLevel();
 public:
     Combate();

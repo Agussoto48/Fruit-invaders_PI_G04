@@ -3,12 +3,10 @@ extern "C" int asm_obstacle_emit_positions(float base_x, float base_y, int rows,
 
 
 std::vector<std::vector<int>> Obstacle::grid = {
-    // arriba más angosto
     {0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0},
     {0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0},
     {0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0},
 
-    // zona gordita (plato ancho)
     {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
     {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
     {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
@@ -16,7 +14,6 @@ std::vector<std::vector<int>> Obstacle::grid = {
     {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
     {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
 
-    // abajo vuelve a afinar
     {0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0},
     {0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0},
     {0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0},
@@ -29,13 +26,11 @@ Obstacle::Obstacle(Vector2 position)
   const int rows = static_cast<int>(grid.size());
   const int cols = static_cast<int>(grid[0].size());
 
-  // Arreglo de punteros a cada fila (cada fila es contigua)
   std::vector<const int*> row_ptrs(rows);
   for (int r = 0; r < rows; ++r) {
     row_ptrs[r] = grid[r].data();
   }
 
-  // Buffer de salida: 2 floats por posición (x,y)
   const int cap = rows * cols;
   std::vector<float> xy(cap * 2);
 

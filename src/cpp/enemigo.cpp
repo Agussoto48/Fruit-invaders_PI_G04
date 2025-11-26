@@ -52,6 +52,7 @@ void Enemigo::UnloadImages(){
 void Enemigo::Update(int direction){
     // Llamar con tipo 0 (horizontal)
     movimientoEnemigo(0, direction, &position, 0.0f, velocidadMultiplicador);
+
 }
 
 bool Enemigo::MoveDown(int distance){
@@ -59,8 +60,8 @@ bool Enemigo::MoveDown(int distance){
     
     // Llamar con tipo 1 (abajo) y verificar retorno
     int alcanzoLimite = movimientoEnemigo(1, distance, &position, limiteInferior, velocidadMultiplicador);
+
     
-    // Retornar true si alcanzó el límite (game over)
     return (alcanzoLimite == 1);
 }
 
