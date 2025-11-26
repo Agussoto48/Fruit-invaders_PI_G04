@@ -1,20 +1,165 @@
 #include "include/combate.h"
 #include <iostream>
+#include <fcntl.h>
+#include <unistd.h>
+#include <termios.h>
+#include <sstream>
+#include <sys/ioctl.h>
 #define cellSize 100
 
 Combate::Combate()
 {
     InitGame();
+    SetupArduino();
 }
 
 Combate::~Combate()
 {
     Enemigo::UnloadImages();
+    if (arduinoFile != -1) {
+        close(arduinoFile);
+    }
+}
+
+bool Combate::SetupArduino() {
+    std::cout << "Conectando a /dev/ttyACM0" << std::endl;
+    arduinoFile = open("/dev/ttyACM0", O_RDWR | O_NOCTTY);
+    
+    if (arduinoFile < 0) {
+        std::cout << "No se pudo abrir /dev/ttyACM0 error: " << std::endl;
+        std::cout << "Usando teclado." << std::endl;
+        return false;
+    }
+    
+    std::cout << "Conectado a /dev/ttyACM0" << std::endl;
+    
+    struct termios tty;
+    if(tcgetattr(arduinoFile, &tty) != 0) {
+        std::cout << "Error obteniendo atributos serie" << std::endl;
+        close(arduinoFile);
+        arduinoFile = -1;
+        return false;
+    }
+    
+    cfsetospeed(&tty, B115200);
+    cfsetispeed(&tty, B115200);
+    
+    tty.c_cflag &= ~PARENB;
+    tty.c_cflag &= ~CSTOPB;
+    tty.c_cflag &= ~CSIZE;
+    tty.c_cflag |= CS8;
+    tty.c_cflag &= ~CRTSCTS;
+    tty.c_cflag |= CREAD | CLOCAL;
+    
+    tty.c_lflag &= ~ICANON;
+    tty.c_lflag &= ~ECHO;
+    tty.c_lflag &= ~ECHOE;
+    tty.c_lflag &= ~ECHONL;
+    tty.c_lflag &= ~ISIG;
+    
+    tty.c_iflag &= ~(IXON | IXOFF | IXANY);
+    tty.c_iflag &= ~(IGNBRK|BRKINT|PARMRK|ISTRIP|INLCR|IGNCR|ICRNL);
+    
+    tty.c_oflag &= ~OPOST;
+    tty.c_oflag &= ~ONLCR;
+    
+    tty.c_cc[VTIME] = 10;
+    tty.c_cc[VMIN] = 0;
+    
+    if(tcsetattr(arduinoFile, TCSANOW, &tty) != 0) {
+        std::cout << "Error aplicando configuración serie" << std::endl;
+        close(arduinoFile);
+        arduinoFile = -1;
+        return false;
+    }
+    
+    tcflush(arduinoFile, TCIOFLUSH);
+    
+    usleep(1000000);
+    
+    std::cout << "Configuración serie completada!" << std::endl;
+    return true;
+}
+
+void Combate::ReadArduinoInput() {
+    if (arduinoFile == -1) return;
+    
+    static std::string buffer = "";
+    
+    char readBuffer[256];
+    int n = read(arduinoFile, readBuffer, sizeof(readBuffer) - 1);
+    
+    if (n > 0) {
+        readBuffer[n] = '\0';
+        buffer += readBuffer;
+        
+        std::cout << "Buffer acumulado: '" << buffer << "'" << std::endl;
+        
+        size_t newlinePos;
+        while ((newlinePos = buffer.find('\n')) != std::string::npos) {
+            std::string line = buffer.substr(0, newlinePos);
+            buffer = buffer.substr(newlinePos + 1);
+            
+            std::cout << "Procesando línea completa: '" << line << "'" << std::endl;
+            
+            size_t comma1 = line.find(',');
+            size_t comma2 = line.find(',', comma1 + 1);
+            
+            if (comma1 != std::string::npos && comma2 != std::string::npos && 
+                comma2 < line.length() - 1) {
+                
+                std::string xStr = line.substr(0, comma1);
+                std::string botonStr = line.substr(comma2 + 1);
+                
+                std::cout << "X string: '" << xStr << "', Boton string: '" << botonStr << "'" << std::endl;
+                
+                try {
+                    int x = std::stoi(xStr);
+                    int boton = std::stoi(botonStr);
+                    
+                    std::cout << "Parsed X: " << x << ", Boton: " << boton << std::endl;
+                    
+                    if (x >= 0 && x <= 1024) {
+                        const int deadZoneLow = 450;
+                        const int deadZoneHigh = 550;
+                        
+                        if (x < deadZoneLow) {
+                            std::cout << "Moving LEFT" << std::endl;
+                            jugador.MoveLeft();
+                        } else if (x > deadZoneHigh) {
+                            std::cout << "Moving RIGHT" << std::endl;
+                            jugador.MoveRight();
+                        } else {
+                            std::cout << "In DEAD ZONE" << std::endl;
+                        }
+                        
+                        if (boton == 0) {
+                            std::cout << "DISPARO" << std::endl;
+                            jugador.Disparar();
+                        }
+                    } else {
+                        std::cout << "X value out of range: " << x << std::endl;
+                    }
+                    
+                } catch (const std::exception& e) {
+                    std::cout << "Error parsing line '" << line << "': " << e.what() << std::endl;
+                }
+            } else {
+                std::cout << "Invalid line format: '" << line << "'" << std::endl;
+            }
+        }
+        
+        if (buffer.length() > 1024) {
+            buffer.clear();
+        }
+    }
 }
 
 void Combate::Update()
 {
     if(run){ 
+        ReadArduinoInput();
+        
         for (auto &disparo : jugador.disparos)
         {
             disparo.Update();
@@ -32,7 +177,6 @@ void Combate::Update()
     }
     else {
         if(IsKeyDown(KEY_ENTER)){
-            //Aquí saltaría a la pantalla de gameover
             Reset();
             InitGame();
         }
@@ -60,18 +204,8 @@ void Combate::Draw()
     {
         obstacle.Draw();
     }
-
-    /*
-    Para hacer debug
-    DrawRectangleLinesEx(jugador.getRect(), 1, BLUE);
-    for (auto &enemigo : enemigos)
-        DrawRectangleLinesEx(enemigo.getRect(), 1, GREEN);
-    for (auto &disparo : enemigoDisparos)
-        DrawRectangleLinesEx(disparo.getRect(), 1, RED);
-    for (auto &disparo : jugador.disparos)
-        DrawRectangleLinesEx(disparo.getRect(), 1, RED);*/
-
 }
+
 void Combate::Inputs()
 {
     if(run)
@@ -116,6 +250,7 @@ void Combate::EliminarDisparoInactivo()
         }
     }
 }
+
 std::vector<Enemigo> Combate::crearEnemigos()
 {
     std::vector<Enemigo> enemigos;
@@ -191,7 +326,6 @@ void Combate::disparoEnemigo(){
         
         int typeIndex = static_cast<int>(enemigo.type);  
         
-        // usar inicialización correcta de Vector2
         Vector2 disparoPos = {
             enemigo.position.x + enemigo.enemigoImages[typeIndex].width / 2,
             enemigo.position.y + enemigo.enemigoImages[typeIndex].height
@@ -326,6 +460,7 @@ void Combate::InitGame(){
     run = true;
     score = 0;
     obstacles = CreateObstacle();
+    arduinoFile = -1;
 }
 
 void Combate::Reset(){

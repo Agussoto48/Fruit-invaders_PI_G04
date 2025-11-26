@@ -6,10 +6,10 @@
 Disparo::Disparo(Vector2 position, int speed, bool esDelEnemigo) 
 {
     if(esDelEnemigo) {
-        cuchillo = LoadTexture("sprites/Semilla.png");  // Semilla para enemigos
+        cuchillo = LoadTexture("sprites/Semilla.png");
     } 
     else {
-        cuchillo = LoadTexture("sprites/Cuchillo.png");  // Cuchillo para jugador
+        cuchillo = LoadTexture("sprites/Cuchillo.png");
     }
     this->position = position;
     this->speed = speed;

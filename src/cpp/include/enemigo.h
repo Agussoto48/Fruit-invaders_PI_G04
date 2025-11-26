@@ -15,14 +15,12 @@ public:
     Vector2 position;
     EnemigoTipo type;
 
-    // Constructores
     Enemigo(EnemigoTipo type, Vector2 position);
 
-    // Métodos
-    void Update(int direction); //actualiza la posicion del enemigo, ya esta en ensambla
-    bool MoveDown(int distance);  // Metodo en ensamblador para mover arriba y abajo
-    void Draw(); //pone las imagenes de los enemigos
-    EnemigoTipo GetType(); //da el tipo de enemigo, sandia, manzana o pineapple
-    static void UnloadImages(); //quita las imagenes cuando se cierra el juego por optimizacion
-    Rectangle getRect(); //esto es el hitbox
+    void Update(int direction);
+    bool MoveDown(int distance);
+    void Draw();
+    EnemigoTipo GetType();
+    static void UnloadImages();
+    Rectangle getRect();
 };

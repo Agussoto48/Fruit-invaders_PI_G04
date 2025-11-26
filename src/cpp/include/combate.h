@@ -14,7 +14,6 @@ private:
     void moverAbajoEnemigos(int distance);
     void disparoEnemigo();
     int direccionEnemigos;
-    //PARTE QUE FALTA IMPLEMENTAR DE ALIENS, QUE DISPAREN:
     std::vector<Disparo> enemigoDisparos;
     constexpr static float disparoEnemigoIntervalo = 0.35;
     float ultimoDisparoEnemigo;
@@ -26,6 +25,10 @@ private:
     void GameOver();
     void Reset();
     void InitGame();
+    
+    int arduinoFile;
+    bool SetupArduino();
+    void ReadArduinoInput();
 public:
     Combate();
     ~Combate();
