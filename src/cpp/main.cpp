@@ -25,7 +25,9 @@ int main()
     musica.SetVolumen(0.5f);
 
     Color grisSuave = {50, 50, 50, 255};
+    Color rojoSuave = {255, 0, 0, 100}; 
     int frameCounter = 0;
+    int frameCounter_daño = 0;
     float aumento_musica = 0.1f;
     int nivel_actual = 1; //para trackear el nivel
 
@@ -36,6 +38,8 @@ int main()
         GameOver gameOver;
         Pausado pausa;
         int lastScore = 0;
+        int vidas_pasadas = combate.lives;
+        bool perdio_vida = false;
         Color colorBackground = GRAY;
         while (!WindowShouldClose() && !menuInicio.quit)
         {
@@ -97,6 +101,7 @@ int main()
                         musica.SetVolumen(0.5f);
                         aumento_musica = 0.1f;
                         nivel_actual = 1; //resetear
+                        vidas_pasadas = combate.lives;
                         gameOver.run = true;
                     }
                     if (combate.pausado)
@@ -173,6 +178,29 @@ int main()
                     }
 
                     combate.Draw();
+                    if(vidas_pasadas > combate.lives)
+                    {
+                        perdio_vida = true;
+                        vidas_pasadas = combate.lives;
+                    }
+                    if(perdio_vida)
+                    {
+                        frameCounter_daño++;
+                        if(frameCounter_daño < 12)
+                        {   
+                            if(frameCounter_daño == 1)
+                            {
+                                musica.EfectoDamage();
+                            }
+                            DrawRectangle(0, 0, windowWidth, windowHeight, rojoSuave);
+                        }
+                        else
+                        {
+                            perdio_vida = false;
+                            frameCounter_daño = 0;
+                        }
+                    
+                    }
 
                     std::string levelText = "Level ";
                     if (combate.level < 10)
