@@ -66,6 +66,15 @@ bool Enemigo::MoveDown(int distance){
 
 Rectangle Enemigo::getRect() {
     int typeIndex = static_cast<int>(type); 
-    return {position.x, position.y, float(enemigoImages[typeIndex].width), float(enemigoImages[typeIndex].height)};
+    //return {position.x, position.y, float(enemigoImages[typeIndex].width), float(enemigoImages[typeIndex].height)};
+
+    Rectangle rectangle;
+
+    rectangle.x = position.x + 18;
+    rectangle.y = position.y;
+    rectangle.width = float(enemigoImages[typeIndex].width) / 1.5;
+    rectangle.height = float(enemigoImages[typeIndex].height);
+
+    return rectangle;
 }
 
