@@ -22,16 +22,16 @@ Combate::~Combate()
 }
 
 bool Combate::SetupArduino() {
-    std::cout << "Conectando a /dev/ttyACM0" << std::endl;
+    std::cout << "Conectando a /dev/ttyACM0..." << std::endl;
     arduinoFile = open("/dev/ttyACM0", O_RDWR | O_NOCTTY);
     
     if (arduinoFile < 0) {
-        std::cout << "No se pudo abrir /dev/ttyACM0 error: " << std::endl;
+        std::cout << "No se pudo abrir /dev/ttyACM0, error: " << std::endl;
         std::cout << "Usando teclado." << std::endl;
         return false;
     }
     
-    std::cout << "Conectado a /dev/ttyACM0" << std::endl;
+    std::cout << "Conectado a /dev/ttyACM0 exitosamente!" << std::endl;
     
     struct termios tty;
     if(tcgetattr(arduinoFile, &tty) != 0) {
@@ -92,6 +92,8 @@ void Combate::ReadArduinoInput() {
     if (n > 0) {
         readBuffer[n] = '\0';
         buffer += readBuffer;
+
+        // Esta tecnica del buffer acumulador es parte de la sugerencia de la IA para la recepcion de los datos provenientes de las coordenadas que envia el joystick
         
         std::cout << "Buffer acumulado: '" << buffer << "'" << std::endl;
         
@@ -117,7 +119,7 @@ void Combate::ReadArduinoInput() {
                     int x = std::stoi(xStr);
                     int boton = std::stoi(botonStr);
                     
-                    std::cout << "Parsed X: " << x << ", Boton: " << boton << std::endl;
+                    std::cout << "Parsed - X: " << x << ", Boton: " << boton << std::endl;
                     
                     if (x >= 0 && x <= 1024) {
                         const int deadZoneLow = 450;
@@ -130,11 +132,11 @@ void Combate::ReadArduinoInput() {
                             std::cout << "Moving RIGHT" << std::endl;
                             jugador.MoveRight();
                         } else {
-                            std::cout << "In DEAD ZONE" << std::endl;
+                            std::cout << "In DEAD ZONE - no movement" << std::endl;
                         }
                         
                         if (boton == 0) {
-                            std::cout << "DISPARO" << std::endl;
+                            std::cout << "DISPARO!" << std::endl;
                             jugador.Disparar();
                         }
                     } else {

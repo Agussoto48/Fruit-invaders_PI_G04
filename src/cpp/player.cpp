@@ -50,7 +50,7 @@ void Player::MoveFromJoystick(int xValue) {
         std::cout << "Moving RIGHT" << std::endl;
         MoveLeft();
     } else {
-        std::cout << "In DEAD ZONE - no movement" << std::endl;
+        std::cout << "In DEAD ZONE" << std::endl;
     }
 }
 
