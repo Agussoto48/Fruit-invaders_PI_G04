@@ -15,7 +15,7 @@ private:
     void disparoEnemigo();
     int direccionEnemigos;
     std::vector<Disparo> enemigoDisparos;
-    constexpr static float disparoEnemigoIntervalo = 0.35;
+    float disparoEnemigoIntervalo;
     float ultimoDisparoEnemigo;
 
     std::vector<Obstacle> CreateObstacle();
@@ -23,19 +23,22 @@ private:
     void checkForCollisions();
 
     void GameOver();
-    void Reset();
     void InitGame();
     
     int arduinoFile;
     bool SetupArduino();
     void ReadArduinoInput();
+    void NextLevel();
 public:
     Combate();
     ~Combate();
+    void Reset();
     void Draw();
     void Update();
     void Inputs();
     bool run;
+    bool pausado;
     int lives;
     int score;
+    int level;
 };

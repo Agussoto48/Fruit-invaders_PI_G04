@@ -2,6 +2,7 @@
 #include <iostream>
 #define ESCALA 0.2f
 
+extern "C" void asm_actualizar_disparo(Vector2* position, int speed, int screenHeight, int* active);
 
 Disparo::Disparo(Vector2 position, int speed, bool esDelEnemigo) 
 {
@@ -23,11 +24,10 @@ void Disparo::Draw() {
 }
 
 void Disparo::Update() {
-    position.y += speed;
     if(active) {
-        if(position.y > GetScreenHeight() || position.y < 0) {
-            active = false;
-        }
+        int activeInt = active ? 1 : 0;
+        asm_actualizar_disparo(&position, speed, GetScreenHeight(), &activeInt);
+        active = (activeInt != 0);
     }
 }
 

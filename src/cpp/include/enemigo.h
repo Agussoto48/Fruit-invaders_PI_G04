@@ -12,6 +12,7 @@ private:
     
 public:
     static Texture2D enemigoImages[3];
+    static float velocidadMultiplicador;
     Vector2 position;
     EnemigoTipo type;
 

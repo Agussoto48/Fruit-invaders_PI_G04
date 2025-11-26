@@ -1,6 +1,7 @@
 #include <iostream>
 #include "include/player.h"
-#define ESCALA 0.2f
+
+#define ESCALA 0.3f
 
 enum direcciones
 {
@@ -21,7 +22,7 @@ Player::~Player(){
 }
 
 void Player::Draw(){
-    DrawTextureEx(chef, position, 0.0 , 0.2f , WHITE);
+    DrawTextureEx(chef, position, 0.0 , 0.3f , WHITE);
 }
 
 void Player::MoveLeft(){
@@ -69,9 +70,11 @@ Rectangle Player::getRect() {
     Rectangle rectangle;
     float ancho = chef.width * ESCALA;
     float alto =  chef.height * ESCALA;
-    rectangle.x = position.x + ancho/4;
-    rectangle.y = position.y;
-    rectangle.width = ancho / 2;
-    rectangle.height = alto;
+
+    rectangle.x = position.x + ancho/3;
+    rectangle.y = position.y + 25;
+    rectangle.width = ancho / 3.5;
+    rectangle.height = alto / 1.5;
+
     return rectangle;
 }

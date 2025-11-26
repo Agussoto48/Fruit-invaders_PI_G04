@@ -7,7 +7,7 @@ Proyecto Integrador de Lenguaje Ensamblador - S2 2025
 - Melisa Alvarado
 - Marco Mora
 
-# Descrpicion
+# Descripción
 **Fruit Invaders** es una reinterpretación de un juego clásico llamado Space Invaders, esta interpretación fue ambientada en un escenario culinario donde frutas rebeldes atacan al chef en una cocina. Este proyecto está pensado en usar el lenguaje ensamblador x86-64 (NASM) como el que maneja la lógica principal del juego, mientras que la parte gráfica está incorporada C++ usando la biblioteca gráfica Raylib.
 
 ## Requisitos
