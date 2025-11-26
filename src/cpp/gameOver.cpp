@@ -15,7 +15,7 @@ void GameOver::cargarTexturas()
 {
     cuchillo = LoadTexture("sprites/Cuchillo.png");
     chef = LoadTexture("sprites/Chef.png");
-    boton_exit = LoadTexture("sprites/Exit_button.png");
+    boton_exit = LoadTexture("sprites/exit_button.png");
     game_over_logo = LoadTexture("sprites/GameOver.png");
     tabla_cortar = LoadTexture("sprites/Cuttin_Board.png");
     semilla = LoadTexture("sprites/Semilla.png");
@@ -27,7 +27,7 @@ void GameOver::InitPositionsTexturas()
     position_cuchillo = {500, 600};
     position_chef = {350, 580};
 
-    position_exit = {410, 700};
+    position_exit = {447, 700};
     position_game_over_logo = {150, -175};
 
     position_tabla_cortar = {1075, 400};
@@ -51,7 +51,7 @@ void GameOver::Draw(int score)
     DrawTextureEx(tabla_cortar, position_tabla_cortar, 90.0, 1.5, grisSuave);
 
     DrawTextureEx(chef, position_chef, 270.0, 0.5, WHITE);
-    DrawTextureEx(boton_exit, position_exit, 0.0, 0.5, WHITE);
+    DrawTextureEx(boton_exit, position_exit, 0.0, 0.9, WHITE);
     DrawTextureEx(semilla, position_semilla_1, 270.0, 0.4, WHITE);
     DrawTextureEx(semilla, position_semilla_2, 90.0, 0.4, WHITE);
 

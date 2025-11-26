@@ -12,16 +12,16 @@ void Pausado::InitPausado()
 void Pausado::cargarTexturas()
 {
     receta = LoadTexture("sprites/Recipe_pause.png");
-    boton_continue = LoadTexture("sprites/Continue_button.png");
-    boton_exit = LoadTexture("sprites/Exit_button.png");
+    boton_continue = LoadTexture("sprites/continue_button.png");
+    boton_exit = LoadTexture("sprites/exit_button.png");
     cuchillo = LoadTexture("sprites/Cuchillo.png");
 }
 void Pausado::InitPositionsTexturas()
 {
     position_receta = {225, 0};
-    position_continue = {425, 375};
-    position_exit = {450, 550};
-    position_cuchillo = {700, 595};
+    position_continue = {400, 375};
+    position_exit = {470, 550};
+    position_cuchillo = {725, 595};
 }
 void Pausado::GameContinue()
 {
@@ -32,7 +32,7 @@ void Pausado::actualizarCuchillo()
     switch (opcion)
     {
     case CONTINUE:
-        position_cuchillo.y = 595.0f;
+        position_cuchillo.y = 550.0f;
         break;
     case EXIT:
         position_cuchillo.y = 730.0f;
@@ -60,8 +60,8 @@ void Pausado::Draw()
 {
     DrawTextureEx(receta, position_receta, 0.0, 1.7, WHITE);
     DrawTextureEx(cuchillo, position_cuchillo, 270.0, 0.5, WHITE);
-    DrawTextureEx(boton_continue, position_continue, 0.0, 0.5, WHITE);
-    DrawTextureEx(boton_exit, position_exit, 0.0, 0.4, WHITE);
+    DrawTextureEx(boton_continue, position_continue, 0.0, 0.8, WHITE);
+    DrawTextureEx(boton_exit, position_exit, 0.0, 0.8, WHITE);
 }
 void Pausado::Update()
 {
