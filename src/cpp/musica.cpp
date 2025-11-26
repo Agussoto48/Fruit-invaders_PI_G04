@@ -5,6 +5,8 @@ Musica::Musica()
     InitAudioDevice();
     musica_menu = LoadMusicStream("music/menu_inicial.mp3");
     musica_combate = LoadMusicStream("music/musica_combate.mp3");
+    hit = LoadSound("music/hit_marker.mp3");
+
 
     SetMusicVolume(musica_menu, masterVolume);
     SetMusicVolume(musica_combate, masterVolume);
@@ -14,6 +16,7 @@ Musica::~Musica()
 {
     UnloadMusicStream(musica_menu);
     UnloadMusicStream(musica_combate);
+    UnloadSound(hit);
 
     CloseAudioDevice();
 }
@@ -49,6 +52,11 @@ void Musica:: SetVelocidad(float factor)
 {
     if (actual != nullptr)
         SetMusicPitch(*actual, factor);
+}
+
+void Musica::EfectoDamage()
+{
+    PlaySound(hit);
 }
 
 void Musica::Update()

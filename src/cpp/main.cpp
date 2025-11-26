@@ -187,13 +187,15 @@ int main()
                     {
                         frameCounter_daño++;
                         if(frameCounter_daño < 12)
-                        {
-
+                        {   
+                            if(frameCounter_daño == 1)
+                            {
+                                musica.EfectoDamage();
+                            }
                             DrawRectangle(0, 0, windowWidth, windowHeight, rojoSuave);
                         }
                         else
                         {
-                            //Sonido de que le pego
                             perdio_vida = false;
                             frameCounter_daño = 0;
                         }
