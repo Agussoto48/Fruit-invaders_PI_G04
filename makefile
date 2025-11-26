@@ -14,7 +14,7 @@ GAME_BIN      := bin/fruit_invaders
 
 LIBS_PC := -lraylib -lm -ldl -lpthread -lGL -lGLU -lX11
 
-ARDUINO_DIR ?= $(PWD)/third_party/ArduinoCore-avr
+ARDUINO_DIR ?= $(PWD)/thirdParty/ArduinoCore-avr
 
 MCU   := atmega328p
 F_CPU := 16000000UL
